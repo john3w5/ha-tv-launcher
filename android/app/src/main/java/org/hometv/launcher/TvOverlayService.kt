@@ -5,8 +5,10 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.app.Service
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.ServiceInfo
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -129,9 +131,18 @@ class TvOverlayService : Service() {
         pending.clear()
     }
 
+    // Waking the TV from standby returns to the launcher (see TvAutostart).
+    private val screenOn = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            if (intent.action == Intent.ACTION_SCREEN_ON) ui.postDelayed({ TvAutostart.launch(this@TvOverlayService) }, TvAutostart.SCREEN_ON_DELAY_MS)
+        }
+    }
+
     override fun onCreate() {
         super.onCreate()
         windows = getSystemService(WindowManager::class.java)
+        val filter = IntentFilter(Intent.ACTION_SCREEN_ON)
+        if (Build.VERSION.SDK_INT >= 33) registerReceiver(screenOn, filter, Context.RECEIVER_NOT_EXPORTED) else registerReceiver(screenOn, filter)
         val manager = getSystemService(NotificationManager::class.java)
         if (Build.VERSION.SDK_INT >= 26) manager.createNotificationChannel(
             NotificationChannel(CHANNEL, "Domácí oznámení", NotificationManager.IMPORTANCE_LOW).apply {
@@ -414,6 +425,7 @@ class TvOverlayService : Service() {
 
     override fun onDestroy() {
         stopping = true; running = false
+        runCatching { unregisterReceiver(screenOn) }
         eventConnection?.disconnect(); imageConnection?.disconnect()
         eventWorker.shutdownNow(); imageWorker.shutdownNow(); doorStatusRepository.close()
         ui.removeCallbacksAndMessages(null); eventQueue.clear(); pending.clear(); seen.clear(); hideOverlay()
