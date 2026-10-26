@@ -1,0 +1,71 @@
+{
+  "household": "Home TV",
+  "publicOrigin": "http://localhost:4317",
+  "allowedOrigins": [],
+  "calendarDays": 7,
+  "apps": [],
+  "photos": {
+    "intervalSeconds": 30
+  },
+  "entities": {
+    "weather": {},
+    "calendars": [
+      {
+        "entityId": "calendar.example_calendar",
+        "name": "Kalendář"
+      }
+    ],
+    "cameras": [
+      {
+        "id": "example_camera",
+        "entityId": "camera.example_camera",
+        "name": "Kamera"
+      }
+    ],
+    "mediaPlayers": [],
+    "scenes": [],
+    "lights": [],
+    "locks": [],
+    "doors": [],
+    "alarm": null
+  },
+  "safeScenes": [],
+  "allowedMediaHosts": [],
+  "allowedStreamHosts": [],
+  "houseEvents": {
+    "enabled": false,
+    "doorbells": [],
+    "alerts": []
+  },
+  "householdPanel": {},
+  "domesticPanel": {
+    "energy": {
+      "powerEntityId": "sensor.example_home_power",
+      "todayEntityId": "sensor.example_home_energy_today",
+      "consumers": []
+    },
+    "rooms": [
+      {
+        "id": "example_room",
+        "name": "Místnost",
+        "areaId": "example_room",
+        "entityId": null,
+        "temperatureEntityId": "sensor.example_room_temperature",
+        "humidityEntityId": "sensor.example_room_humidity",
+        "co2EntityId": null,
+        "pm25EntityId": null,
+        "heatingPowerEntityId": null,
+        "presence": [],
+        "equipment": []
+      }
+    ],
+    "air": {
+      "rooms": [],
+      "extractionEntityId": null
+    },
+    "water": {},
+    "hotWater": {},
+    "washer": {},
+    "vacuum": {}
+  }
+}

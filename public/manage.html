@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="cs" data-theme="auto">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f5f5f7">
+  <meta name="referrer" content="no-referrer">
+  <title>Nastavení · Home TV</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/manage.css">
+  <script type="module" src="/manage.js"></script>
+</head>
+<body>
+  <div class="page">
+    <header class="topbar">
+      <a class="brand" href="/manage.html" aria-label="Home TV nastavení">
+        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1Z"/></svg>
+        <span>Home TV <small>TV</small></span>
+      </a>
+      <span id="connection-status" class="connection" role="status">Připojuji…</span>
+    </header>
+
+    <main>
+      <section id="pair-screen" aria-labelledby="pair-title">
+        <div class="intro">
+          <span class="eyebrow">DOMA. PO TVÉM.</span>
+          <h1 id="pair-title">Tvoje TV.<br>Podle tebe.</h1>
+          <p>Vzhled, spořič a rodinné fotografie.<br>Všechno pohodlně z telefonu.</p>
+        </div>
+        <div class="panel pair-panel">
+          <h2>Propoj svůj telefon</h2>
+          <ol class="pair-steps">
+            <li>Na televizi krátce stiskni <strong>MENU</strong> a otevři <strong>Nastavení → Ovládání z telefonu</strong>.</li>
+            <li>Na této stránce zadej zobrazený osmimístný kód. Platí jednu minutu a použiješ ho jednou.</li>
+          </ol>
+          <form id="pair-form">
+            <label class="field-label" for="pair-code">Kód z televize</label>
+            <input id="pair-code" class="code-input" type="text" inputmode="numeric" autocomplete="one-time-code" enterkeyhint="go" pattern="[0-9]{8}" maxlength="8" placeholder="00000000" required aria-describedby="pair-help">
+            <p id="pair-help" class="hint">Telefon musí být ve stejné domácí síti jako TV.</p>
+            <button id="pair-button" class="primary" type="submit" disabled>Propojit telefon</button>
+          </form>
+          <p id="pair-notice" class="notice" role="alert" hidden></p>
+        </div>
+        <p class="privacy-note">Nastavení běží u vás doma přes Home Assistant. Mac k tomu nepotřebuješ. Přístup ověříš jednorázovým kódem z televize.</p>
+      </section>
+
+      <section id="settings-screen" aria-labelledby="settings-title" hidden>
+        <div class="intro compact">
+          <span class="eyebrow">TVŮJ DOMÁCÍ PROSTOR</span>
+          <h1 id="settings-title">Přesně podle tebe.</h1>
+          <p>Nastavení se po uložení přenese na Home TV.</p>
+        </div>
+        <p id="settings-warning" class="notice warning" role="status" hidden></p>
+        <p id="settings-notice" class="notice" role="status" aria-live="polite" hidden></p>
+
+        <form id="preferences-form">
+          <section class="panel" aria-labelledby="appearance-title">
+            <div class="section-heading"><span class="section-icon" aria-hidden="true">◐</span><div><h2 id="appearance-title">Vzhled</h2><p>Malá změna. Úplně jiná atmosféra.</p></div></div>
+            <fieldset>
+              <legend>Režim obrazovky</legend>
+              <div class="segmented">
+                <input id="theme-light" type="radio" name="theme" value="light"><label for="theme-light">Světlý</label>
+                <input id="theme-dark" type="radio" name="theme" value="dark"><label for="theme-dark">Tmavý</label>
+                <input id="theme-auto" type="radio" name="theme" value="auto"><label for="theme-auto">Automaticky</label>
+              </div>
+              <p class="hint">Automatický režim na TV sleduje východ a západ slunce.</p>
+            </fieldset>
+            <fieldset>
+              <legend>Pozadí</legend>
+              <div class="background-choices">
+                <label class="background-choice"><input type="radio" name="background" value="weather"><span class="background-sample weather-sample" aria-hidden="true"><span>☀</span></span><span>Počasí</span></label>
+                <label class="background-choice"><input type="radio" name="background" value="photos"><span class="background-sample photos-sample" aria-hidden="true"><svg viewBox="0 0 28 28"><rect x="4" y="4" width="20" height="20" rx="4"/><path d="m5 21 7-8 5 5 3-3 4 5"/><circle cx="19" cy="10" r="2"/></svg></span><span>Fotografie</span></label>
+                <label class="background-choice"><input type="radio" name="background" value="plain"><span class="background-sample plain-sample" aria-hidden="true"></span><span>Klidné</span></label>
+              </div>
+            </fieldset>
+            <label class="setting-row switch-row" for="navigation-sounds"><span><strong>Zvuk při pohybu</strong><small>Jemná odezva při ovládání nabídky.</small></span><input id="navigation-sounds" type="checkbox" role="switch"><span class="switch" aria-hidden="true"></span></label>
+          </section>
+
+          <section class="panel" aria-labelledby="saver-title">
+            <div class="section-heading"><span class="section-icon" aria-hidden="true">◷</span><div><h2 id="saver-title">Chvíle pro vaše vzpomínky</h2><p>Fotografie, čas a to podstatné z domova.</p></div></div>
+            <label class="setting-row" for="saver-minutes"><span><strong>Spustit spořič po</strong><small>Minuty nečinnosti. Nula ho vypne.</small></span><span class="number-field"><input id="saver-minutes" type="number" min="0" max="120" step="1" inputmode="numeric" required><span>min</span></span></label>
+            <label class="setting-row" for="photo-seconds"><span><strong>Střídat fotografie po</strong><small>Od 10 sekund do jedné hodiny.</small></span><span class="number-field"><input id="photo-seconds" type="number" min="10" max="3600" step="1" inputmode="numeric" required><span>s</span></span></label>
+          </section>
+          <div class="save-bar"><span id="save-state" role="status">Vše je uložené.</span><button id="save-button" class="primary" type="submit" disabled>Uložit změny</button></div>
+        </form>
+
+        <section class="panel photos-panel" aria-labelledby="photos-title">
+          <div class="section-heading"><span class="section-icon" aria-hidden="true">▧</span><div><h2 id="photos-title">Vaše fotografie</h2><p id="photo-count">Načítám knihovnu…</p></div></div>
+          <p class="body-copy">Přidej rodinné fotografie do pozadí a spořiče. Zůstanou v domácím mostu.</p>
+          <label class="upload-button" for="photo-files"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 16V3m-4 4 4-4 4 4M4 15v5a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-5"/></svg>Přidat fotografie</label>
+          <input id="photo-files" class="visually-hidden" type="file" accept="image/jpeg,image/png,image/webp" multiple>
+          <p class="hint">JPEG, PNG nebo WebP. Nejvýše 12 MiB na fotografii, 10 fotografií najednou.</p>
+          <p id="photo-notice" class="notice" role="status" aria-live="polite" hidden></p>
+          <details id="photo-library" class="library-details"><summary>Nahlédnout do knihovny</summary><label class="field-label" for="photo-select">Fotografie</label><select id="photo-select"><option value="">Vyber fotografii</option></select><figure id="photo-preview" hidden><img id="photo-image" alt="Rodinná fotografie z domácí knihovny" decoding="async"><figcaption>Načítá se jen vybraná fotografie.</figcaption></figure></details>
+        </section>
+
+        <details id="timeline-panel" class="panel timeline-panel"><summary><span>Doma v poslední době</span><span aria-hidden="true">⌄</span></summary><p class="hint">Poslední oznámení a zazvonění.</p><p id="timeline-notice" class="hint" role="status">Otevřením načteš historii.</p><ol id="timeline-list" class="timeline-list"></ol><button id="timeline-refresh" class="subtle-button" type="button">Obnovit historii</button></details>
+
+        <footer class="connected-footer"><p>Připojeno pouze k domácímu mostu.</p><button id="logout-button" class="subtle-button" type="button">Odpojit tento telefon</button></footer>
+      </section>
+    </main>
+    <footer class="page-footer">Home TV <span>·</span> Vítej doma.</footer>
+  </div>
+</body>
+</html>

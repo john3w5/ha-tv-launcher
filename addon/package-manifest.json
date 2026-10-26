@@ -1,0 +1,342 @@
+{
+  "version": 1,
+  "generatedAt": "2026-10-26T13:05:26.716Z",
+  "privateDataIncluded": false,
+  "files": [
+    {
+      "path": "runtime/server.mjs",
+      "bytes": 65299,
+      "sha256": "779d141b99087e5e48dc7cda163d5e5c004386b424343833ba8fc76873956228"
+    },
+    {
+      "path": "runtime/package.json",
+      "bytes": 488,
+      "sha256": "48ae515ffa87170fae1d5ba40bed067bb0478d2bc04676ca349c4846a3ce8d2e"
+    },
+    {
+      "path": "runtime/config.example.json",
+      "bytes": 1527,
+      "sha256": "6b770934e4e0747b53fe5529665d9a7aaa00d77d0beb6cac87f090dd170d7ebf"
+    },
+    {
+      "path": "runtime/assistant-plan.schema.json",
+      "bytes": 1134,
+      "sha256": "9bbab10f2d755ddb795ab88b6b57802002edbc1ac85ec66013d3e640108f67dd"
+    },
+    {
+      "path": "runtime/public/app.js",
+      "bytes": 84514,
+      "sha256": "fc4edb5df7839d671ce4746268f23da78855e637399e13c09c05424b902a6209"
+    },
+    {
+      "path": "runtime/public/apps/relax/app.js",
+      "bytes": 497,
+      "sha256": "18d62b7740f8eab531e02744bcfe0593576eab1bc332721057da2fb3c7e4ae1b"
+    },
+    {
+      "path": "runtime/public/apps/relax/index.html",
+      "bytes": 383,
+      "sha256": "280ba4ef282291d018981fcdb33fbb405d67056d7ad4b7fe65c008b4cd027062"
+    },
+    {
+      "path": "runtime/public/apps/relax/style.css",
+      "bytes": 933,
+      "sha256": "d9c6219b763a0707a0b1501fdb9e91bc032e6d0ae38b33202d973a5e125dea27"
+    },
+    {
+      "path": "runtime/public/apps/rodinne-kvizy/app.js",
+      "bytes": 2098,
+      "sha256": "90e982e42bc8f2bc8d9fffc9ac7a1afa76c55d99593deb47465a839365102fb8"
+    },
+    {
+      "path": "runtime/public/apps/rodinne-kvizy/index.html",
+      "bytes": 424,
+      "sha256": "73785fd59da8f299e708de79a58cddc78b408ba7bb8fae19ef330ef58ca42295"
+    },
+    {
+      "path": "runtime/public/apps/rodinne-kvizy/style.css",
+      "bytes": 910,
+      "sha256": "d43702e230d0a40a9fc434763e42bec189753ba0c957317534a5d35aece2b087"
+    },
+    {
+      "path": "runtime/public/assets/europe-110m.geojson",
+      "bytes": 43130,
+      "sha256": "c07e80479ec35f7316dff36d00c2dda502bf6023df7ee977ac0d38c6a9eb7ed8"
+    },
+    {
+      "path": "runtime/public/calendar-utils.js",
+      "bytes": 3545,
+      "sha256": "10a888882e9fed4f73ab74874e7fc8b4c29668750bc621a33ae2469983cd3f5d"
+    },
+    {
+      "path": "runtime/public/camera-player.js",
+      "bytes": 8578,
+      "sha256": "c25eddfdeb625e207234eac14275e9574edf4c2ec5a9a18796fa903527413dbe"
+    },
+    {
+      "path": "runtime/public/domestic-ui.css",
+      "bytes": 17147,
+      "sha256": "4539a268eb7ebeb9ad1df273cdbe8efeef6bbffd46aaa390fbd76ea4881a15d9"
+    },
+    {
+      "path": "runtime/public/domestic-ui.js",
+      "bytes": 22912,
+      "sha256": "42022e34ef4c6d3fbc003ea2db85f4905ab03ec53c0d15d250d283a44630679f"
+    },
+    {
+      "path": "runtime/public/favicon.svg",
+      "bytes": 239,
+      "sha256": "4b62ab611549abc78e42bfea60104600643949f7865bcac20ae03a31bc4ae8ac"
+    },
+    {
+      "path": "runtime/public/house-map.css",
+      "bytes": 3478,
+      "sha256": "79df1d51eb802548a87554a7829f0316e228d21b4ab4c6f4b93b98b3117671b3"
+    },
+    {
+      "path": "runtime/public/house-map.js",
+      "bytes": 16163,
+      "sha256": "01bf21e469d494d13d5f1636702880cc0be3bf1a24ed487deb35abba2bef6625"
+    },
+    {
+      "path": "runtime/public/household-ui.css",
+      "bytes": 6731,
+      "sha256": "0de1333dd3f6437b75fcbd8df1affc3cfcdbd7be42969c8c63b55ef91f79b410"
+    },
+    {
+      "path": "runtime/public/household-ui.js",
+      "bytes": 11991,
+      "sha256": "a56e711250d4597071f0e7b6fac77a01bb31010db71a9406cb2f5e7c7309b6f0"
+    },
+    {
+      "path": "runtime/public/index.html",
+      "bytes": 4458,
+      "sha256": "ce6d4bdc10e6ff7f117aed24c7bb431fc1605bb602a46ba1ff0fb75aa538bb61"
+    },
+    {
+      "path": "runtime/public/manage.css",
+      "bytes": 10834,
+      "sha256": "249167894cb134e2bb14e360cd7b1b7b629dbc6a6053b93b3d92e80781bfad03"
+    },
+    {
+      "path": "runtime/public/manage.html",
+      "bytes": 8361,
+      "sha256": "b084e0d840973b0d63f17e7cb4e5e1966ff1430da016f01081f6d02b013c000e"
+    },
+    {
+      "path": "runtime/public/manage.js",
+      "bytes": 16933,
+      "sha256": "ac633c1d2f9f1a9c852a7d3ece09ffab7a05de2d285fad36c2f038623d654bfe"
+    },
+    {
+      "path": "runtime/public/navigation-sound.js",
+      "bytes": 3517,
+      "sha256": "f20e091a6d753d09bdf64fc58d940e0fa58a2d86f3f6d456d21d71c9ac70df8b"
+    },
+    {
+      "path": "runtime/public/notice-preferences.css",
+      "bytes": 1207,
+      "sha256": "1db6115d26320472442dbc383c3c6c291e78568daced725070fbf640287c46d9"
+    },
+    {
+      "path": "runtime/public/notice-preferences.js",
+      "bytes": 17141,
+      "sha256": "e19c240451a32e9d78752ef942cc74b654e29f55da5eb19857b9549ddefedef4"
+    },
+    {
+      "path": "runtime/public/power-updates.js",
+      "bytes": 2927,
+      "sha256": "383701f06bba481413f79e2395bb27c32a1739374f04d10a4457e0e56cef9232"
+    },
+    {
+      "path": "runtime/public/styles.css",
+      "bytes": 49230,
+      "sha256": "5f35c218a483ba5f05f1c64e5b9692834e9e2516511226ef56ef45c5019d5fbe"
+    },
+    {
+      "path": "runtime/public/tv-controls.css",
+      "bytes": 5501,
+      "sha256": "8297a32f9f6e5d2f34f95ed872cdb899cd2e32ab190991d250d7d2cf01bcb99b"
+    },
+    {
+      "path": "runtime/public/vendor/README.md",
+      "bytes": 334,
+      "sha256": "c53a545d9b945e6bdb1f7054a1f45981e2bea969c7522e362bab2014bdaa0a27"
+    },
+    {
+      "path": "runtime/public/vendor/hls.LICENSE.txt",
+      "bytes": 1338,
+      "sha256": "ca8773cf798c7ed997d4dd7c8e23c348699f8d5b7462636694cc14de6cda12db"
+    },
+    {
+      "path": "runtime/public/vendor/hls.light.min.js",
+      "bytes": 385716,
+      "sha256": "0251332c00a216a35d7d6919044d60da82b78beb3bd50ac6c662ae74a2f5474b"
+    },
+    {
+      "path": "runtime/public/weather-background.css",
+      "bytes": 6257,
+      "sha256": "111ad91ab06c9d8b3069e7bad437da9c88796b57c2498ae939c77708b083d87e"
+    },
+    {
+      "path": "runtime/public/weather-background.js",
+      "bytes": 8302,
+      "sha256": "722a1f6c2b3358a7a485f954dd09e516d86b82421dc6499251831d62801fa5e6"
+    },
+    {
+      "path": "runtime/lib/assistant-planner.mjs",
+      "bytes": 14426,
+      "sha256": "965aad3441ee0de522e83e21d922441dccc246ef7f4b27bde63cf2a877d2121c"
+    },
+    {
+      "path": "runtime/lib/assistant-service.mjs",
+      "bytes": 5758,
+      "sha256": "22f1a8c3bc0f82a6247b28891c56bffb95fa5452fbf6299ba17224f7da50bb1f"
+    },
+    {
+      "path": "runtime/lib/camera-snapshots.mjs",
+      "bytes": 8308,
+      "sha256": "1b210565361553cc281b096abe43e2bbfec1a1f58e11be579f40ae0a6e312b54"
+    },
+    {
+      "path": "runtime/lib/client-settings.mjs",
+      "bytes": 3029,
+      "sha256": "3821dbf049ceb026668fae210a3cf8cf0a908f2c0a86f39fb39fa30dfd7f71e9"
+    },
+    {
+      "path": "runtime/lib/demo.mjs",
+      "bytes": 1574,
+      "sha256": "feb99a66faf29610e289b6458f83f7dc46c231c53d9d27d1182a2644484d46c8"
+    },
+    {
+      "path": "runtime/lib/domestic-panel.mjs",
+      "bytes": 18017,
+      "sha256": "76afc4078aeae03afaace152443d53a2f1d6a3a40abda691e4b0bb132a5411de"
+    },
+    {
+      "path": "runtime/lib/entrance-door.mjs",
+      "bytes": 632,
+      "sha256": "62f21c6f9bb90bb78d75e19654ba55b4c93c2069234931df421b35db6c2f5fbc"
+    },
+    {
+      "path": "runtime/lib/ha-entity-identity.mjs",
+      "bytes": 6090,
+      "sha256": "bc5db69e96da77975f1ca0c0646a767876215b5976cc822bab7117d9778bb647"
+    },
+    {
+      "path": "runtime/lib/hls-proxy.mjs",
+      "bytes": 5434,
+      "sha256": "0581be27aaedf336d45dee781f9f6fad525f9bdca90a4db6c2c5c85f4403ea35"
+    },
+    {
+      "path": "runtime/lib/home-assistant.mjs",
+      "bytes": 17853,
+      "sha256": "03d0a7aa8bd9b2473d69bd2b975cc63b109cc0594efb7fa370253f1427a3cb7d"
+    },
+    {
+      "path": "runtime/lib/home-controls.mjs",
+      "bytes": 4331,
+      "sha256": "7ee2b4d374a7314a04ca165eed9b8c4b1050f455f8674c7aeabce78aad6f2bc7"
+    },
+    {
+      "path": "runtime/lib/house-events.mjs",
+      "bytes": 17288,
+      "sha256": "227e8073304777d7aaa7ddf970673c0e5982feba8590e17579fbfda6144c0e99"
+    },
+    {
+      "path": "runtime/lib/house-timeline.mjs",
+      "bytes": 5425,
+      "sha256": "9ab2b542e5e373c4c5403c69da3d811f51310a659b8f9daa421002eda11322e8"
+    },
+    {
+      "path": "runtime/lib/household-panel.mjs",
+      "bytes": 11292,
+      "sha256": "0470ac6b3ec5bf759d8e0169280cacde408809c9dc188384093987075621f343"
+    },
+    {
+      "path": "runtime/lib/mobile-pairing.mjs",
+      "bytes": 2162,
+      "sha256": "f1003f2dcacfd5cc57c6611ba2b860dc0696e45d522192a1fc0650a5f8dc19ed"
+    },
+    {
+      "path": "runtime/lib/native-assistant-service.mjs",
+      "bytes": 13778,
+      "sha256": "49e8a90ce1836f9b7664412da784773bc2116403c9a5926e2bd8654c3e79e9c9"
+    },
+    {
+      "path": "runtime/lib/night-service.mjs",
+      "bytes": 471,
+      "sha256": "12992d5d4534f4f6c44631b72e2584621d3d73cc9ca40b71a4da2b56e3cba07e"
+    },
+    {
+      "path": "runtime/lib/notification-retries.mjs",
+      "bytes": 972,
+      "sha256": "d50cd60db23aee017a68d7ab1a8476122d60746c765fecbe51d812891dd3d675"
+    },
+    {
+      "path": "runtime/lib/paired-sessions.mjs",
+      "bytes": 9513,
+      "sha256": "4daeb6aa7c6af7e4b056882a814fdc13036b5d6fff766e1542c891ad8bba4ccb"
+    },
+    {
+      "path": "runtime/lib/power-updates.mjs",
+      "bytes": 3038,
+      "sha256": "666b84dfd78eb897848be52e6e3942343b7916eeff91e395d37a144f332c22cc"
+    },
+    {
+      "path": "runtime/lib/prima-content.mjs",
+      "bytes": 11744,
+      "sha256": "6de4cda3e338d3670e5eed569f11eaaa4bc018e060bc2d1ee842df0937bf8000"
+    },
+    {
+      "path": "runtime/lib/private-json-store.mjs",
+      "bytes": 2862,
+      "sha256": "107ff77071a7f66fee7acffdfc85cfbcd5234034126f6a2d89df2853b63ac6a7"
+    },
+    {
+      "path": "runtime/lib/tv-control.mjs",
+      "bytes": 11944,
+      "sha256": "5c0005ef20767bb46845f7a73c8b21a8f430d0e5c900f36a9993c609565afbb1"
+    },
+    {
+      "path": "runtime/lib/tv-prima-adapter.mjs",
+      "bytes": 7018,
+      "sha256": "2a7e3e3a07d64b7809bde6cfcf5672bb1a8feb563430e82ef14a41e377125772"
+    },
+    {
+      "path": "runtime/lib/webrtc.mjs",
+      "bytes": 11421,
+      "sha256": "f5db8d06cfaab1782bc2edcf25ed119caee4ffd15031a72c6f8268103c311c7f"
+    },
+    {
+      "path": "Dockerfile",
+      "bytes": 276,
+      "sha256": "d8595492c596cb281299d1fc5f92f1f5fa7e2d8ffefd2a5bb01e31c15cf6170c"
+    },
+    {
+      "path": ".dockerignore",
+      "bytes": 147,
+      "sha256": "e62186861872ebc8b1701cff610a3f871754f86a143a31433639a330ce4af90f"
+    },
+    {
+      "path": "startup.mjs",
+      "bytes": 13613,
+      "sha256": "098a34d6d357b3ec490255b89bc91c716c516386ad0c9769444566222fcbf0fc"
+    },
+    {
+      "path": "README.md",
+      "bytes": 4007,
+      "sha256": "f7cfab46669b469d4e6269f21da68b58767ce0628e9a897bc054e255315a73e9"
+    },
+    {
+      "path": "translations/cs.yaml",
+      "bytes": 1433,
+      "sha256": "d99b5ee12a3b3e68050a868ea2e4c51aade04389535414524ff36157bad93d3e"
+    },
+    {
+      "path": "config.yaml",
+      "bytes": 915,
+      "sha256": "db967ae4018475ccb5e0695d948209a63e09addb7816b360f97ee6d035909b6c"
+    }
+  ]
+}

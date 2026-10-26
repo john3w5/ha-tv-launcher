@@ -1,0 +1,39 @@
+.welcome-sub .birthday-label{display:inline-flex;gap:5px;align-items:center}.birthday-label svg{width:16px;height:16px}.household-heading h2{margin:6px 0 0}.household-heading{margin-top:0}.security-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-bottom:22px}.security-card{padding:24px;display:flex;gap:16px;align-items:center;text-align:left;color:var(--ink)}.security-card h3{font-size:20px;margin:0 0 7px}.security-card p{font-size:13px;color:var(--muted);margin:8px 0 0}.security-card .round-arrow{margin-left:auto;flex-shrink:0}.security-icon{width:48px;height:48px;flex-shrink:0;display:grid;place-items:center;background:rgba(128,128,128,.12);border-radius:16px}.security-icon svg{width:26px;height:26px}.security-icon.armed{color:#58a77c;background:rgba(67,166,109,.13)}.security-icon.arming{color:#c38d39;background:rgba(206,152,60,.13)}.security-state{font-size:15px;font-weight:500}.household-grid{display:grid;grid-template-columns:1.5fr 1fr;gap:22px}.family-map-card{padding:25px;min-width:0}.family-map{min-height:320px;border-radius:20px;overflow:hidden;margin:18px 0}.household-side{display:flex;flex-direction:column;gap:18px}.household-side>.card{padding:24px}.daily-card h3{font-size:21px;line-height:1.5;font-weight:500;margin:15px 0}.people-list{display:grid;grid-template-columns:1fr 1fr;gap:20px}.person-line{display:flex;align-items:center;gap:11px;flex-wrap:wrap}.person-line strong{display:block;font-size:17px}.person-line small{display:block;font-size:12px;color:var(--muted);margin-top:5px}.person-line .chip{font-size:11px}.person-dot{width:11px;height:11px;border-radius:50%;background:#689ee5}.person-dot.person_b{background:#c991bd}.night-button{display:flex;align-items:center;gap:9px}.night-button svg,.night-confirmation svg{width:20px;height:20px}.night-plan{padding-left:24px;line-height:1.65}.night-plan li{padding:4px 0}.night-confirmation{display:flex;align-items:center;gap:18px;margin:24px 0 12px}.night-confirmation button{display:flex;gap:10px;align-items:center;min-width:275px;justify-content:center}.night-confirmation span{font-size:13px;color:var(--muted)}#night-result{font-size:14px;color:var(--muted)}.security-detail>strong{font-size:26px}.notice-entry{padding:15px 0;border-bottom:1px solid var(--line)}.notice-entry h3{margin:0 0 8px}.notice-entry p{white-space:pre-line;font-size:15px;line-height:1.5}.birthday-confetti{position:absolute;inset:0;overflow:hidden;pointer-events:none}.birthday-confetti i{position:absolute;top:-24px;left:var(--x);width:7px;height:12px;border-radius:2px;opacity:.65;animation:confetti-fall var(--duration) linear var(--delay) infinite;will-change:transform}.birthday-confetti.confetti-rest{opacity:.2;transition:opacity 3s}.birthday-confetti.confetti-rest i{animation-iteration-count:1}@keyframes confetti-fall{to{transform:translate3d(var(--drift),110vh,0) rotate(var(--spin))}}@media(prefers-reduced-motion:reduce){.birthday-confetti{display:none}}@media(max-width:900px){.security-grid{gap:10px}.security-card{padding:17px;gap:10px}.security-card h3{font-size:17px}.security-card .round-arrow{display:none}.household-grid{grid-template-columns:1fr}.household-heading{align-items:flex-start;gap:12px}.household-heading .small-button{font-size:12px}.security-icon{width:34px;height:34px;border-radius:11px}}@media(max-width:560px){.security-grid{grid-template-columns:1fr}.security-card p{margin-top:5px}.household-heading{flex-direction:column}.people-list{grid-template-columns:1fr}.family-map{min-height:280px}.night-confirmation{flex-direction:column;align-items:flex-start}}
+
+
+/* TV security overview: the three systems form a readable left column;
+   map, people and family actions use the remaining width on the same screen. */
+@media (min-width:1100px) and (min-height:700px) {
+  html[data-performance="fast"] [data-domestic-view="security"]{display:grid;grid-template-columns:260px minmax(0,1fr);gap:14px 16px;align-items:start}
+  html[data-performance="fast"] [data-domestic-view="security"]>.household-heading{grid-column:1 / -1;margin:0}
+  html[data-performance="fast"] .household-heading .eyebrow{display:none}
+  html[data-performance="fast"] .household-heading h2{font-size:24px;margin:0}
+  html[data-performance="fast"] [data-domestic-view="security"]>.security-grid{grid-column:1;grid-row:2;grid-template-columns:1fr;gap:12px;margin:0}
+  html[data-performance="fast"] .security-card{min-height:112px;padding:16px;gap:12px}
+  html[data-performance="fast"] .security-card h3{font-size:19px;margin-bottom:7px}
+  html[data-performance="fast"] .security-card p{font-size:12px;line-height:1.4;margin-top:6px}
+  html[data-performance="fast"] .security-icon{width:40px;height:40px;border-radius:13px}
+  html[data-performance="fast"] .security-icon svg{width:24px;height:24px}
+  html[data-performance="fast"] .security-card .round-arrow{width:22px;height:22px}
+  html[data-performance="fast"] [data-domestic-view="security"]>.household-grid{grid-column:2;grid-row:2}
+  html[data-performance="fast"] .household-grid{grid-template-columns:minmax(0,1.2fr) minmax(310px,1fr);gap:14px;align-items:start}
+  html[data-performance="fast"] .family-map-card{padding:18px}
+  html[data-performance="fast"] .family-map{min-height:0;margin:12px 0}
+  html[data-performance="fast"] .family-map .house-map-toolbar{gap:10px;margin-bottom:10px;flex-wrap:wrap}
+  html[data-performance="fast"] .family-map .house-map-button{min-height:36px;padding:7px 12px}
+  html[data-performance="fast"] .family-map .house-map-button:first-child,
+  html[data-performance="fast"] .family-map .house-map-button:nth-child(2){padding:4px 12px}
+  html[data-performance="fast"] .family-map .house-map-canvas{height:240px;aspect-ratio:auto}
+  html[data-performance="fast"] .people-list{gap:12px}
+  html[data-performance="fast"] .person-line{gap:8px}
+  html[data-performance="fast"] .person-line strong{font-size:16px}
+  html[data-performance="fast"] .person-line small{font-size:12px;line-height:1.35;margin-top:4px}
+  html[data-performance="fast"] .person-line .chip{font-size:11px;padding:5px 8px}
+  html[data-performance="fast"] .household-side{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-content:start}
+  html[data-performance="fast"] .household-side>.card{padding:16px}
+  html[data-performance="fast"] .household-side>.daily-card{grid-column:1 / -1}
+  html[data-performance="fast"] .daily-card h3{font-size:18px;line-height:1.35;margin:10px 0}
+  html[data-performance="fast"] .household-side .description{font-size:13px;line-height:1.45;margin:10px 0 12px}
+  html[data-performance="fast"] .household-side .small-button{padding:10px 13px;font-size:12px}
+  html[data-performance="fast"] .household-side .label{font-size:13px}
+}

@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+  <meta name="referrer" content="origin">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://tile.openstreetmap.org; connect-src 'none'; font-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <link rel="stylesheet" href="leaflet.css">
+  <link rel="stylesheet" href="family-map.css">
+  <title>Rodinná mapa</title>
+</head>
+<body>
+  <main id="map" aria-label="Aktuální dostupné polohy rodiny"></main>
+  <div id="status" role="status">Čekám na aktuální polohy…</div>
+  <script src="leaflet.js"></script>
+  <script src="family-map.js"></script>
+</body>
+</html>

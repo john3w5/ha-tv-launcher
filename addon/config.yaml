@@ -1,0 +1,38 @@
+name: "Home TV Launcher"
+version: "0.1.0"
+slug: "home_tv_launcher"
+description: "Native TV dashboard bridge for your own Home Assistant."
+arch:
+  - aarch64
+  - amd64
+startup: application
+boot: auto
+init: true
+timeout: 30
+homeassistant_api: true
+host_network: false
+map:
+  - type: app_config
+    read_only: false
+ports:
+  4317/tcp: 4317
+ports_description:
+  4317/tcp: "Local TV dashboard API and preview"
+webui: "http://[HOST]:[PORT:4317]/"
+watchdog: "tcp://[HOST]:4317"
+options:
+  public_origin: "http://homeassistant.local:4317"
+  ha_connection: supervisor
+  config_import_revision: 0
+  night_control_enabled: false
+  session_days: 90
+schema:
+  public_origin: url
+  ha_connection: list(supervisor|direct)
+  ha_url: url?
+  ha_access_token: password?
+  pairing_code: password(8,200)?
+  webhook_token: password(16,200)?
+  config_import_revision: int(0,1000000)
+  night_control_enabled: bool
+  session_days: int(1,90)

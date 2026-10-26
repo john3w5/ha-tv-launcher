@@ -1,0 +1,26 @@
+# Local credentials and household data
+.env
+.env.*
+!.env.example
+config.json
+**/config.local.*
+private/
+exports/
+photos/
+media/
+*.log
+*.jks
+*.keystore
+*.apk
+*.aab
+*.aar
+tools.local.json
+# Build/runtime state
+node_modules/
+.gradle/
+**/build/
+android/local.properties
+.idea/
+.DS_Store
+__pycache__/
+*.pyc

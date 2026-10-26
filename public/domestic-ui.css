@@ -1,0 +1,88 @@
+.domestic-tabs{display:flex;gap:7px;padding:6px;border:1px solid var(--line);background:var(--glass);border-radius:22px;margin-bottom:25px;width:max-content;max-width:100%;flex-wrap:wrap}.domestic-tabs button{background:transparent;color:var(--muted);padding:12px 21px;border-radius:17px;font-size:14px}.domestic-tabs button.selected{background:var(--surface-strong);color:var(--ink);box-shadow:0 5px 17px #00000010}.domestic-tabs button:focus-visible{outline:0;background:var(--surface);color:var(--ink);box-shadow:0 5px 20px #00000018;transform:none}.domestic-heading{margin:0 0 23px}.domestic-heading h2{font-size:29px;letter-spacing:-.7px;font-weight:560;margin:0 0 9px}.domestic-heading p:last-child{font-size:14px;color:var(--muted);margin:0}.domestic-quick{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:18px}.domestic-quick-item{display:flex;align-items:center;gap:13px;border-radius:20px;padding:16px 18px;text-align:left}.domestic-quick-item>svg{width:21px;height:21px;flex-shrink:0;color:var(--muted)}.domestic-quick-item>svg:last-child{width:13px;margin-left:auto}.domestic-quick-item span{font-size:11px;color:var(--muted)}.domestic-quick-item strong{display:block;font-size:20px;color:var(--ink);font-weight:500;margin-top:5px}.domestic-overview-grid{display:grid;grid-template-columns:1.08fr 1fr;gap:20px;align-items:start}.energy-panel{grid-row:span 2;min-width:0}.energy-headline{display:flex;justify-content:space-between;gap:16px;align-items:flex-end}.energy-headline span{display:block;font-size:13px;color:var(--muted)}.energy-headline strong{display:block;font-size:45px;font-weight:300;letter-spacing:-1.8px;margin-top:7px}.energy-headline .energy-today{text-align:right}.energy-today strong{font-size:26px;letter-spacing:-.8px;font-weight:400}.energy-distribution{display:grid;grid-template-columns:1fr .8fr 1.5fr;align-items:center;min-height:260px;margin-top:16px}.energy-house-node{display:flex;flex-direction:column;align-items:center;gap:15px;width:96px;height:96px;border-radius:30px;background:var(--surface-strong);justify-content:center;border:1px solid var(--line)}.energy-house-node svg{width:29px;height:29px}.energy-house-node span{font-size:14px}.energy-links{height:220px;width:100%;overflow:visible}.energy-links path{stroke:var(--line);stroke-width:3;fill:none}.energy-links path.active{stroke:#8cacb7;stroke-width:6}.energy-consumers{display:grid;gap:16px}.energy-consumer{border:1px solid var(--line);border-radius:18px;padding:13px 15px;background:var(--glass);display:flex;justify-content:space-between;align-items:center;gap:12px;min-height:58px}.energy-consumer span{font-size:13px;color:var(--muted)}.energy-consumer strong{font-size:17px;font-weight:500;white-space:nowrap}.domestic-footnote{font-size:11px;line-height:1.55;color:var(--muted);margin:18px 0 0}.domestic-reading>span{display:flex;align-items:center;gap:7px;color:var(--muted);font-size:12px}.domestic-reading>span svg{width:16px;height:16px;flex-shrink:0}.domestic-reading>strong{display:block;font-size:23px;font-weight:450;letter-spacing:-.5px;margin-top:12px;white-space:nowrap}.domestic-reading>small{display:block;color:var(--muted);font-size:10px;margin-top:6px}.water-readings,.hot-water-readings,.washer-readings{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:17px}.water-valves{border-top:1px solid var(--line);margin-top:23px;padding-top:6px}.valve-row{display:flex;align-items:center;gap:13px;padding:13px 0}.valve-row strong{display:block;font-weight:500;font-size:14px}.valve-row small{display:block;color:var(--muted);font-size:12px;margin-top:4px}.valve-row>span:last-child{margin-left:auto;font-size:14px}.valve-indicator{width:33px;height:33px;border-radius:11px;display:grid;place-items:center;background:var(--glass);color:var(--muted);flex-shrink:0}.valve-indicator svg{width:18px;height:18px}.valve-indicator.open{color:#5a9eb6;background:#70b6ca17}.hot-water-panel .label{margin-bottom:22px}.domestic-rooms{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:17px;margin-bottom:20px}.domestic-room-card{color:var(--ink)}.domestic-room-card .card-heading{margin-bottom:20px}.domestic-room-card .label{font-size:16px}.room-temperature{font-size:45px;font-weight:300;letter-spacing:-1.6px;display:block}.room-temperature small{font-size:19px;letter-spacing:0;margin-left:5px}.room-target{font-size:12px;color:var(--muted);margin-top:7px}.room-activity{display:inline-block;font-size:12px;margin-top:20px;padding:7px 11px;border-radius:12px;background:var(--glass);color:var(--muted)}.room-activity.heating{color:#c3915b;background:#cd8f4514}.air-room-grid{display:grid;grid-template-columns:1fr 1fr;gap:30px}.air-room-grid h3{font-size:16px;font-weight:500;margin:0 0 20px}.air-values{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.air-extraction{display:flex;align-items:center;gap:10px;border-top:1px solid var(--line);padding-top:20px;margin-top:24px;font-size:13px;color:var(--muted)}.air-extraction svg{width:20px;height:20px}.air-extraction strong{color:var(--ink);font-weight:500;margin-left:auto}.room-detail-top{display:flex;gap:60px;margin:22px 0 30px}.room-detail-top span{display:block;color:var(--muted);font-size:13px}.room-detail-top strong{display:block;font-size:38px;font-weight:350;margin-top:10px}.room-air-details{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:17px;margin:28px 0}.domestic-cleaning-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start}.washer-hero{display:flex;align-items:center;gap:27px;min-height:180px}.washer-hero p{font-size:12px;color:var(--muted);margin:0 0 12px}.washer-hero h3{font-size:26px;font-weight:500;letter-spacing:-.5px;margin:0 0 13px}.washer-hero span{font-size:13px;color:var(--muted)}.washer-hero small{display:block;color:var(--muted);font-size:11px;margin-top:7px}.washer-art{width:105px;height:125px;border-radius:22px;background:linear-gradient(145deg,#f0f2f41c,#7c839318);border:1px solid var(--line);position:relative;flex-shrink:0;box-shadow:inset 0 1px 0 #ffffff30}.washer-art:before{content:'';position:absolute;left:14px;top:14px;width:30px;height:5px;border-radius:2px;background:#8e959f5e}.washer-art:after{content:'';position:absolute;right:15px;top:12px;width:9px;height:9px;border-radius:50%;background:#a6adb96b}.washer-art .washer-drum{position:absolute;left:18px;bottom:18px;width:68px;height:68px;border:7px solid #a5aeb240;border-radius:50%;background:linear-gradient(140deg,#8da5b62e,#4966780c);box-shadow:inset 0 0 0 1px #ffffff12}.washer-readings{border-top:1px solid var(--line);padding-top:24px;margin-top:18px}.washer-panel progress{width:100%;height:5px;margin:10px 0;accent-color:#8cafb9}.vacuum-meta{display:flex;gap:30px;font-size:12px;color:var(--muted);margin-bottom:18px}.vacuum-meta strong{color:var(--ink);font-weight:500;margin-left:5px}.vacuum-map-stage{position:relative;border-radius:20px;background:#121518;overflow:hidden;min-height:200px}.vacuum-map-button{display:block;background:transparent;width:100%;padding:0}.vacuum-map-button img{display:block;width:100%;max-height:320px;object-fit:contain}.vacuum-map-button>span{position:absolute;right:12px;bottom:12px;display:flex;align-items:center;gap:6px;border-radius:13px;background:#151a21c9;color:#fff;padding:8px 11px;font-size:11px}.vacuum-map-button svg{width:15px;height:15px}.vacuum-map-empty{display:flex;align-items:center;justify-content:center;flex-direction:column;gap:20px;min-height:220px;color:#b9bec6;font-size:14px}.vacuum-map-empty svg{width:40px;height:40px}.vacuum-map-error{padding:24px;color:#c7ccd2;font-size:13px}.vacuum-selections{margin-top:22px}.vacuum-selections>span{color:var(--muted);font-size:12px}.vacuum-selections>div{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.vacuum-selections .chip{display:inline-flex;gap:5px;align-items:center;font-size:11px}.vacuum-selections .chip svg{width:14px;height:14px}.vacuum-selections .chip.selected{background:#78a4bb20}.vacuum-control-disabled{margin-top:20px;display:flex;align-items:center;gap:8px;opacity:.5;cursor:default}.vacuum-control-disabled svg{width:17px;height:17px}.vacuum-large-map{display:block;width:100%;max-height:70vh;object-fit:contain;border-radius:18px;background:#121518}@media(max-width:1000px){.domestic-quick{grid-template-columns:repeat(2,minmax(0,1fr))}.domestic-overview-grid{grid-template-columns:1fr}.energy-panel{grid-row:auto}.domestic-rooms{grid-template-columns:repeat(2,minmax(0,1fr))}.domestic-cleaning-grid{grid-template-columns:1fr}.air-room-grid{grid-template-columns:1fr}.energy-distribution{min-height:240px}}@media(max-width:600px){.domestic-tabs{width:100%;gap:3px;border-radius:18px}.domestic-tabs button{font-size:11px;padding:11px 12px}.domestic-heading h2{font-size:25px}.domestic-quick-item{padding:14px 12px;gap:8px}.domestic-quick-item strong{font-size:17px}.domestic-quick-item>svg:last-child{display:none}.energy-headline strong{font-size:35px}.energy-headline .energy-today strong{font-size:23px}.energy-distribution{grid-template-columns:.7fr .5fr 1.6fr}.energy-house-node{width:70px;height:80px;border-radius:22px}.energy-consumer{padding:12px;gap:6px}.energy-consumer strong{font-size:14px}.domestic-reading>strong{font-size:19px}.domestic-reading>span{font-size:10px}.water-readings,.hot-water-readings,.washer-readings{gap:10px}.domestic-rooms{gap:11px}.domestic-room-card{padding:19px 16px}.domestic-room-card .label{font-size:13px;gap:6px}.domestic-room-card .label svg{width:15px}.domestic-room-card .round-arrow{display:none}.room-temperature{font-size:35px}.room-detail-top{gap:35px}.washer-hero{gap:18px}.washer-hero h3{font-size:23px}.washer-art{width:90px;height:110px}.washer-art .washer-drum{width:61px;height:61px;left:14px;bottom:13px}}
+
+.vacuum-history-metrics{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:22px}.icon-button.has-notice-filter{background:#8ba4c323;color:var(--ink);border-radius:13px;box-shadow:inset 0 0 0 1px var(--line)}
+
+.energy-panel{grid-row:auto;min-height:205px}.energy-headline{margin:15px 0 20px}
+
+/* TV layout uses columns for related measurements instead of shrinking every
+   card. All readings and controls remain in the active section. */
+@media (min-width:1100px) and (min-height:700px) {
+  html[data-performance="fast"] .domestic-tabs{padding:4px;gap:5px;margin-bottom:14px}
+  html[data-performance="fast"] .domestic-tabs button{padding:10px 18px;min-height:42px;font-size:14px}
+  html[data-performance="fast"] .domestic-heading{margin:0 0 14px}
+  html[data-performance="fast"] .domestic-heading h2{font-size:25px;margin:0;line-height:1.2}
+  html[data-performance="fast"] .domestic-heading .eyebrow,
+  html[data-performance="fast"] .domestic-heading>p:last-child{display:none}
+  html[data-performance="fast"] .domestic-quick{gap:12px;margin-top:12px}
+  html[data-performance="fast"] .domestic-quick-item{padding:11px 16px;min-height:64px;gap:11px}
+  html[data-performance="fast"] .domestic-quick-item strong{font-size:20px;margin-top:4px}
+  html[data-performance="fast"] .domestic-quick-item span{font-size:12px}
+  html[data-performance="fast"] .domestic-overview-grid{grid-template-columns:1fr 1.12fr;gap:16px;align-items:stretch}
+  html[data-performance="fast"] .domestic-overview-grid>.energy-panel{grid-column:1;grid-row:1;min-height:0}
+  html[data-performance="fast"] .domestic-overview-grid>.hot-water-panel{grid-column:1;grid-row:2}
+  html[data-performance="fast"] .domestic-overview-grid>.water-panel{grid-column:2;grid-row:1 / span 2}
+  html[data-performance="fast"] .energy-headline{margin:8px 0 14px}
+  html[data-performance="fast"] .energy-headline strong{font-size:42px}
+  html[data-performance="fast"] .energy-today strong{font-size:27px}
+  html[data-performance="fast"] .domestic-reading>strong{font-size:24px;margin-top:8px}
+  html[data-performance="fast"] .domestic-reading>small{font-size:11px;margin-top:4px}
+  html[data-performance="fast"] .domestic-footnote{font-size:11px;line-height:1.45;margin-top:12px}
+  html[data-performance="fast"] .water-valves{margin-top:16px;padding-top:4px}
+  html[data-performance="fast"] .valve-row{padding:12px 0}
+  html[data-performance="fast"] .hot-water-panel .label{margin-bottom:16px}
+
+  html[data-performance="fast"] .domestic-rooms{grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-bottom:16px;align-items:stretch}
+  html[data-performance="fast"] .domestic-room-card{padding:18px 16px}
+  html[data-performance="fast"] .domestic-room-card .card-heading{min-height:34px;margin-bottom:12px;gap:6px}
+  html[data-performance="fast"] .domestic-room-card .label{font-size:14px;line-height:1.3;gap:7px}
+  html[data-performance="fast"] .domestic-room-card .round-arrow{width:24px;height:24px;flex-shrink:0}
+  html[data-performance="fast"] .room-temperature{font-size:36px;line-height:1.1}
+  html[data-performance="fast"] .room-temperature small{font-size:17px}
+  html[data-performance="fast"] .room-target{font-size:12px;margin-top:8px}
+  html[data-performance="fast"] .room-activity{font-size:12px;margin-top:12px;padding:6px 9px}
+  html[data-performance="fast"] .air-room-grid{gap:24px}
+  html[data-performance="fast"] .air-room-grid h3{font-size:16px;margin-bottom:12px}
+  html[data-performance="fast"] .air-extraction{margin-top:16px;padding-top:14px}
+
+  html[data-performance="fast"] .domestic-cleaning-grid{grid-template-columns:.88fr 1.42fr;gap:16px;align-items:start}
+  html[data-performance="fast"] .washer-hero{gap:20px;min-height:154px}
+  html[data-performance="fast"] .washer-hero h3{font-size:24px;line-height:1.3;margin-bottom:10px}
+  html[data-performance="fast"] .washer-readings{margin-top:14px;padding-top:16px;gap:12px}
+  html[data-performance="fast"] .washer-readings .domestic-reading>strong{font-size:22px}
+  html[data-performance="fast"] .washer-readings .domestic-reading>span{font-size:12px}
+  html[data-performance="fast"] .vacuum-panel{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(190px,.9fr);gap:12px 16px;align-items:start}
+  html[data-performance="fast"] .vacuum-panel>.card-heading{grid-column:1 / -1;margin:0}
+  html[data-performance="fast"] .vacuum-meta{grid-column:2;grid-row:2;flex-direction:column;gap:6px;margin:0;font-size:12px}
+  html[data-performance="fast"] .vacuum-map-stage{grid-column:1;grid-row:2 / span 4;min-height:224px}
+  html[data-performance="fast"] .vacuum-map-button img{height:224px;max-height:none;object-fit:contain}
+  html[data-performance="fast"] .vacuum-map-empty{min-height:224px;font-size:14px}
+  html[data-performance="fast"] .vacuum-panel>.domestic-footnote:first-of-type{grid-column:1;grid-row:6;margin:0}
+  html[data-performance="fast"] .vacuum-history-metrics{grid-column:2;grid-row:3;margin:0;gap:10px}
+  html[data-performance="fast"] .vacuum-history-metrics .domestic-reading>strong{font-size:20px}
+  html[data-performance="fast"] .vacuum-history-metrics .domestic-reading>span{font-size:11px}
+  html[data-performance="fast"] .vacuum-selections{grid-column:2;grid-row:4;margin:0}
+  html[data-performance="fast"] .vacuum-selections>div{gap:5px;margin-top:8px}
+  html[data-performance="fast"] .vacuum-selections .chip{font-size:11px;padding:6px 8px}
+  html[data-performance="fast"] .vacuum-control-disabled{grid-column:2;grid-row:5;margin:0;font-size:12px;min-height:42px}
+  html[data-performance="fast"] .vacuum-panel>.domestic-footnote:last-of-type{grid-column:2;grid-row:6;margin:0}
+}
+
+/* One room card groups its thermostat and actual air sensors. */
+.domestic-room-card .card-heading{align-items:center;gap:10px}
+.domestic-room-card .card-heading .label{min-width:0;flex:1}
+.domestic-room-card .card-heading .room-activity{flex:0 0 auto;margin:0;font-size:10px;max-width:50%;text-align:right;line-height:1.3}
+.room-inline-air{display:grid;grid-template-columns:1fr 1fr;gap:16px;border-top:1px solid var(--line);margin-top:18px;padding-top:14px}
+.room-inline-air>div>span{display:flex;align-items:center;gap:7px;font-size:11px;color:var(--muted)}
+.room-inline-air svg{width:17px;height:17px}
+.room-inline-air strong{display:block;margin-top:7px;font-size:18px;font-weight:500;color:var(--ink);white-space:nowrap}
+.air-extraction.glass{border-radius:17px;padding:12px 18px;margin-top:12px}
+@media(min-width:1100px) and (min-height:700px){
+ html[data-performance="fast"] .domestic-rooms{grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:10px}
+ html[data-performance="fast"] .domestic-room-card{padding:17px 20px}
+ html[data-performance="fast"] .domestic-room-card .card-heading{min-height:28px;margin-bottom:10px}
+ html[data-performance="fast"] .domestic-room-card .label{font-size:16px}
+ html[data-performance="fast"] .domestic-room-card .room-temperature{font-size:35px}
+ html[data-performance="fast"] .room-inline-air{margin-top:12px;padding-top:11px}
+ html[data-performance="fast"] .room-inline-air strong{margin-top:5px}
+}
+@media(max-width:600px){.domestic-room-card .card-heading{align-items:flex-start;flex-direction:column}.domestic-room-card .card-heading .room-activity{max-width:100%;text-align:left}.room-inline-air{gap:8px}.room-inline-air strong{font-size:15px}}

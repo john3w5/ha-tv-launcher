@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Unexecuted Domov TV assistant plan",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["reply", "actions", "needsConfirmation"],
+  "properties": {
+    "reply": { "type": "string", "minLength": 1, "maxLength": 1000 },
+    "needsConfirmation": { "type": "boolean" },
+    "actions": {
+      "type": "array",
+      "maxItems": 5,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["type", "key", "appId", "query", "selection"],
+        "properties": {
+          "type": { "type": "string", "enum": ["key", "launch_app", "search_content", "clarify"] },
+          "key": { "type": ["string", "null"], "enum": ["up", "down", "left", "right", "ok", "back", "home", "play_pause", "play", "pause", "volume_up", "volume_down", "mute", null] },
+          "appId": { "type": ["string", "null"], "maxLength": 160 },
+          "query": { "type": ["string", "null"], "maxLength": 200 },
+          "selection": { "type": ["string", "null"], "enum": ["latest", "none", null] }
+        }
+      }
+    }
+  }
+}

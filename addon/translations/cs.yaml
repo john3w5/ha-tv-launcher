@@ -1,0 +1,27 @@
+configuration:
+  public_origin:
+    name: "Adresa služby dostupná televizi"
+    description: "Nastavte vlastní adresu HA hostitele s portem 4317, bez cesty a parametrů."
+  ha_connection:
+    name: "Připojení k Home Assistant"
+    description: "Supervisor používá interní API a automatický token. Direct vyžaduje vaši adresu a token."
+  ha_url:
+    name: "Přímá adresa Home Assistant"
+    description: "Vyplňuje se jen v režimu direct."
+  ha_access_token:
+    name: "Soukromý přístupový token HA"
+    description: "Vyplňuje se jen v režimu direct. Není součástí APK ani dashboard JSON."
+  pairing_code:
+    name: "Vlastní kód pro spárování obrazovky"
+    description: "Zvolte dlouhý náhodný kód. Bez vyplnění se vytvoří náhodný kód pouze v /data."
+  webhook_token:
+    name: "Samostatný token pro oznámení"
+    description: "Zvolte jiný dlouhý náhodný token. Bez vyplnění se vytvoří pouze v /data."
+  config_import_revision:
+    name: "Revize požadovaného importu konfigurace"
+    description: "Výchozí 0 zachovává /data/config.json. Pro import vlastní /config/config.json zvyšte číslo nad poslední importovanou revizi a restartujte aplikaci."
+  night_control_enabled:
+    name: "Povolit potvrzovaný noční plán"
+    description: "Výchozí vypnuto. Nejdříve nakonfigurujte a prověřte vlastní plán."
+  session_days:
+    name: "Platnost spárování ve dnech"

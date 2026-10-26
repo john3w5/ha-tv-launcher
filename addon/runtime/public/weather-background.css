@@ -1,0 +1,31 @@
+.weather-background{position:absolute;inset:0;overflow:hidden;pointer-events:none;display:none;contain:layout paint style}.weather-background[data-active="true"]{display:block}.weather-background-sky{position:absolute;inset:0;background:linear-gradient(165deg,#283642,#222a34 57%,#202329)}.weather-background[data-theme="light"] .weather-background-sky{background:linear-gradient(165deg,#c4d6e3,#d8e2e9 51%,#e4e6e8)}.weather-background[data-scene="cloudy"] .weather-background-sky,.weather-background[data-scene="fog"] .weather-background-sky{background:linear-gradient(150deg,#303841,#252b32 70%)}.weather-background[data-theme="light"][data-scene="cloudy"] .weather-background-sky,.weather-background[data-theme="light"][data-scene="fog"] .weather-background-sky{background:linear-gradient(150deg,#c6ced4,#e0e3e6 70%)}.weather-background[data-scene="rain"] .weather-background-sky,.weather-background[data-scene="storm"] .weather-background-sky{background:linear-gradient(155deg,#293844,#252d38 65%)}.weather-background[data-theme="light"][data-scene="rain"] .weather-background-sky,.weather-background[data-theme="light"][data-scene="storm"] .weather-background-sky{background:linear-gradient(155deg,#b1c4d0,#d4dce2 65%)}.weather-background[data-low-sun="true"] .weather-background-sky:after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,#d9a47e16,transparent 65%)}.weather-background[data-theme="light"][data-low-sun="true"] .weather-background-sky:after{background:linear-gradient(0deg,#edc4a54d,transparent 65%)}
+.weather-background-sun-position{position:absolute;top:0;left:0;width:0;height:0;transform:translate3d(var(--weather-sun-x,50vw),var(--weather-sun-y,45vh),0);transition:transform 24s linear;will-change:transform}.weather-background[data-sun="false"] .weather-background-sun-position{display:none}.weather-background-sun{position:absolute;width:clamp(55px,7vw,115px);aspect-ratio:1;border-radius:50%;transform:translate(-50%,-50%);background:radial-gradient(circle at 38% 28%,#fff8e7d9,#e7c68e9c);opacity:.4}.weather-background-sun:before{content:"";position:absolute;inset:-160%;border-radius:50%;background:radial-gradient(circle,#e8c99a22,transparent 67%)}.weather-background[data-scene="clear"] .weather-background-sun{opacity:.85}.weather-background[data-scene="partly-cloudy"] .weather-background-sun{opacity:.6}.weather-background[data-scene="cloudy"] .weather-background-sun,.weather-background[data-scene="rain"] .weather-background-sun{opacity:.15}.weather-background[data-scene="fog"] .weather-background-sun,.weather-background[data-scene="storm"] .weather-background-sun,.weather-background[data-scene="snow"] .weather-background-sun,.weather-background[data-scene="hail"] .weather-background-sun,.weather-background[data-scene="sleet"] .weather-background-sun{opacity:.07}
+/* The same continuous Bezier silhouettes and placement are drawn by NativeCloudSilhouette. */
+.weather-background-atmosphere{position:absolute;inset:0;width:100%;height:100%}
+.weather-background-clouds{opacity:0}
+.weather-background[data-scene="partly-cloudy"] .weather-background-clouds,
+.weather-background[data-scene="cloudy"] .weather-background-clouds,
+.weather-background[data-scene="rain"] .weather-background-clouds,
+.weather-background[data-scene="storm"] .weather-background-clouds,
+.weather-background[data-scene="snow"] .weather-background-clouds,
+.weather-background[data-scene="sleet"] .weather-background-clouds,
+.weather-background[data-scene="hail"] .weather-background-clouds,
+.weather-background[data-scene="fog"] .weather-background-clouds{opacity:1}
+.weather-background[data-scene="partly-cloudy"] .weather-background-cloud-low{display:none}
+.weather-background[data-theme="dark"] .weather-background-clouds path{opacity:1}
+.weather-background[data-theme="dark"] .weather-cloud-top{stop-color:#e6eef9;stop-opacity:.07451}
+.weather-background[data-theme="dark"] .weather-cloud-bottom{stop-color:#abbed5;stop-opacity:.01569}
+.weather-background-rain{fill:none;stroke:#c7d8e5;stroke-width:1.3;stroke-linecap:round;opacity:0}
+.weather-background[data-scene="rain"] .weather-background-rain,.weather-background[data-scene="storm"] .weather-background-rain,.weather-background[data-scene="sleet"] .weather-background-rain{opacity:.13}
+.weather-background-snow{fill:#fff;opacity:0}
+.weather-background[data-scene="snow"] .weather-background-snow,.weather-background[data-scene="hail"] .weather-background-snow,.weather-background[data-scene="sleet"] .weather-background-snow{opacity:.35}
+.wallpaper.has-weather-background>.wallpaper-shade{display:none}
+/* Preserve the explicit photo/plain choice even before an update hook runs. */
+html[data-background="photos"] .weather-background,html[data-background="plain"] .weather-background,body.is-saver .weather-background{display:none}.wallpaper.has-weather-background>.aurora,.wallpaper.has-weather-background>.mountain{display:none}@media(prefers-reduced-motion:reduce){.weather-background-sun-position{transition:none;will-change:auto}}html[data-performance="fast"] .weather-background-sun-position{transition:none;will-change:auto}html[data-performance="fast"] .weather-background-sun:before{inset:-95%}
+
+/* Explicit weather preset keeps actual sky legible behind translucent glass. */
+html[data-background="weather"] .weather-background[data-theme="light"] .weather-background-sky{background:linear-gradient(165deg,#9fc7e4,#c8dce9 50%,#ecdfcf)}
+html[data-background="weather"] .weather-background[data-theme="light"][data-scene="cloudy"] .weather-background-sky,html[data-background="weather"] .weather-background[data-theme="light"][data-scene="fog"] .weather-background-sky{background:linear-gradient(155deg,#aebfcf,#d7dfe5 68%,#e6e5df)}
+html[data-background="weather"] .weather-background[data-theme="light"][data-scene="rain"] .weather-background-sky,html[data-background="weather"] .weather-background[data-theme="light"][data-scene="storm"] .weather-background-sky{background:linear-gradient(155deg,#8199ae,#bdcbd5 68%,#d4dbe0)}
+html[data-background="weather"] .weather-background[data-scene="partly-cloudy"] .weather-background-sun{opacity:.95}
+html[data-background="weather"] .background-swatch.weather{background:linear-gradient(145deg,#9ac6e7,#f5dfb6)}

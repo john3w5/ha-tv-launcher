@@ -1,0 +1,10 @@
+**
+!Dockerfile
+!startup.mjs
+!runtime/
+!runtime/**
+runtime/.env*
+runtime/private/
+runtime/config.json
+runtime/**/.DS_Store
+runtime/**/node_modules/

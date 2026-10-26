@@ -1,0 +1,64 @@
+.small-button svg{width:18px;height:18px;flex:0 0 18px;vertical-align:middle}.back-chevron{transform:rotate(180deg)}.settings-native{margin-bottom:18px}.settings-native .small-button{display:inline-flex;align-items:center;gap:12px}.tv-collection-toolbar>div{display:flex;gap:10px;align-items:center}.tv-pagination .small-button{display:inline-flex;align-items:center;gap:8px}.tv-collection-tabs{margin-bottom:18px}
+
+.tv-collection-toolbar{flex-wrap:wrap}.tv-collection-toolbar h2{margin:0;font-size:24px;letter-spacing:-.5px}.tv-collection-toolbar>div{flex-wrap:wrap}.tv-collection-tabs{width:max-content;max-width:100%}@media(max-width:700px){.tv-collection-toolbar{gap:12px}.tv-collection-toolbar h2{font-size:22px}.tv-collection-toolbar .small-button{font-size:11px;padding:10px 12px}.tv-collection-tabs button{font-size:12px;padding:9px 13px}.tv-collection-tabs{margin-bottom:20px}}
+
+html .app-shell .welcome-right .mode-badge{max-width:none}@media(max-width:1099px){html .app-shell .welcome-info{flex-wrap:wrap}html .app-shell .welcome-right{flex-basis:100%;justify-content:flex-start;margin-left:0;flex-wrap:wrap}}
+
+/* TV startup focus must remain visible even after pointer input changed focus-visible heuristics. */
+a.native-app{display:block;min-width:0;cursor:pointer;color:inherit;text-decoration:none}
+html[data-tv="true"] .native-app:focus{outline:none}
+html[data-tv="true"] .native-app:focus .app-art{transform:translateY(-5px) scale(1.045);box-shadow:0 17px 36px #00000035,inset 0 1px 0 #fff5;filter:brightness(1.18)}
+html[data-tv="true"] .native-app:focus strong{color:#fff;text-shadow:0 0 16px #c9dbff80}
+html[data-tv="true"][data-theme="light"] .native-app:focus .app-art{box-shadow:0 16px 35px #2c35402f,inset 0 1px 0 #fff6}
+html[data-tv="true"][data-theme="light"] .native-app:focus strong{color:#111722;text-shadow:none}
+
+/* Dates stay beside their event, including the next days shown on the overview. */
+.calendar-card .event{grid-template-columns:70px minmax(0,1fr);gap:10px}
+.calendar-card .event time{display:flex;flex-direction:column;gap:3px;line-height:1.3;white-space:nowrap}
+.calendar-card .event-day{font-size:11px;font-weight:600;color:var(--ink)}
+.calendar-card .event time small{font-size:10px;color:var(--muted)}
+
+/* A single dim layer avoids full-screen backdrop sampling around playing video.
+   The dialog keeps its glass surface, rounded shadow and entrance animation. */
+.dialog-backdrop{isolation:isolate;backdrop-filter:none;-webkit-backdrop-filter:none;background:rgba(9,16,25,.52)}
+.dialog{position:relative;isolation:isolate}
+
+/* Station values share one compact grid rather than a separate branded strip. */
+.weather-card .weather-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px 12px;margin-top:12px;padding-top:12px}
+.weather-card .metric{min-width:0;gap:7px;align-items:center}
+.weather-card .metric>div{min-width:0;display:flex;flex-direction:column;gap:3px}
+.weather-card .metric small{margin:0;font-size:9px;color:var(--muted)}
+.weather-card .metric span{font-size:12px;white-space:nowrap;color:var(--ink)}
+.domestic-quick-item:focus-visible{transform:translateY(-2px) scale(1.025);box-shadow:inset 0 1px 0 #ffffff70,0 12px 26px #13243c20}
+@media(min-width:1100px) and (min-height:700px){
+ html[data-performance="fast"] .weather-card .temperature{font-size:50px}
+ html[data-performance="fast"] .weather-card{padding:16px}
+ html[data-performance="fast"] .weather-card .card-heading{margin-bottom:6px}
+ html[data-performance="fast"] .weather-card .weather-description{margin-top:4px;font-size:13px;line-height:1.25}
+ html[data-performance="fast"] .weather-card .weather-location{font-size:10px;line-height:1.2;margin-top:2px}
+ html[data-performance="fast"] .weather-card .weather-metrics{margin-top:6px;padding-top:6px;gap:6px 10px}
+ html[data-performance="fast"] #view-content[data-view="home"]>.home-strip{margin-bottom:15px}
+}
+
+/* Camera previews preserve the entire sensor view in the same native frame. */
+.camera-preview img,.camera-preview .overview-camera-video{object-fit:contain;background:#0c1017}
+.camera-preview:after{box-shadow:none}
+
+/* Every retained installed app uses a single full-width brand tile family. */
+.app-art.music{background:linear-gradient(135deg,#8d323d,#5b2027);color:white}
+.app-art.kids{background:linear-gradient(135deg,#963a45,#61252c);color:white}
+.app-art.native-media{background:linear-gradient(135deg,#535070,#353448);color:white}
+.app-art.native-browser{background:linear-gradient(135deg,#356379,#22404e);color:white}
+.app-art.native-gallery{background:linear-gradient(135deg,#4e6d58,#324739);color:white}
+.app-art.native-remote{background:linear-gradient(135deg,#5c6679,#3b424e);color:white}
+.app-art.utility-brand{flex-direction:column;gap:8px}
+.app-art.utility-brand>svg{width:28px;height:28px}
+.app-art.utility-brand .app-wordmark{font-size:23px;letter-spacing:-.5px}
+.home-strip .text-button,.home-strip .home-state{display:inline-flex;align-items:center;gap:8px;min-width:0}
+.home-strip svg{width:18px;height:18px;flex:0 0 18px}
+.home-strip .home-state>span{min-width:0}
+@media(min-width:1100px) and (min-height:700px){
+ html[data-performance="fast"] #view-content[data-view="apps"]>.tv-app-grid{grid-template-columns:repeat(6,minmax(0,1fr));gap:24px 20px}
+ html[data-performance="fast"] #view-content[data-view="apps"] .app-art{height:112px}
+ html[data-performance="fast"] .home-strip>.home-state:nth-child(3)>span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+}

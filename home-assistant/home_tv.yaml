@@ -1,0 +1,26 @@
+# Optional generic rest_command definitions. Nothing is installed automatically.
+# Values belong in your own HA secrets.yaml, never in a public repository.
+rest_command:
+  home_tv_notify:
+    url: !secret home_tv_notify_url
+    method: post
+    headers:
+      authorization: !secret home_tv_bearer
+    content_type: application/json
+    timeout: 10
+    payload: >-
+      {{ {"title": title | default("Home TV"),
+           "message": message,
+           "type": notification_type | default("info"),
+           "durationSeconds": duration_seconds | default(12) | int(12)} | to_json }}
+  home_tv_media:
+    url: !secret home_tv_media_url
+    method: post
+    headers:
+      authorization: !secret home_tv_bearer
+    content_type: application/json
+    timeout: 10
+    payload: >-
+      {{ {"url": media_url,
+           "type": media_type | default("video/mp4"),
+           "title": title | default("Média")} | to_json }}

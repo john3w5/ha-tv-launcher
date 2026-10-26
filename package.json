@@ -1,0 +1,17 @@
+{
+  "name": "home-tv-launcher",
+  "version": "0.1.0",
+  "description": "Native Android TV launcher and configurable Home Assistant bridge",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "start": "node --env-file-if-exists=.env server.mjs",
+    "test": "node --test test/*.test.mjs",
+    "check": "node --check server.mjs && node --check public/app.js",
+    "check:addon": "node scripts/check-addon-package.mjs"
+  },
+  "license": "MIT",
+  "private": true
+}
