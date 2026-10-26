@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-10-26T20:21:32.049Z",
+  "generatedAt": "2026-10-26T20:22:18.359Z",
   "privateDataIncluded": false,
   "files": [
     {
@@ -260,8 +260,8 @@
     },
     {
       "path": "runtime/lib/native-assistant-service.mjs",
-      "bytes": 13892,
-      "sha256": "fb28603e8b8cef4d0c57cf3207377a949517436a793bdce7d9a375c7830179d6"
+      "bytes": 13959,
+      "sha256": "0bd0ff91b3d47df1db061b6ba57ad2f95cfc06397879ae06fe64801eaebebd37"
     },
     {
       "path": "runtime/lib/night-service.mjs",

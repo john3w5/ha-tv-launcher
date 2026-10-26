@@ -20,7 +20,7 @@ public final class NativeLaunchPolicy {
             "com.google.android.youtube.tv", "com.spotify.tv.android", "org.videolan.vlc",
             "com.google.android.youtube.tvmusic", "com.google.android.youtube.tvkids",
             "com.tcl.ui_mediaCenter", "com.tcl.browser", "com.tcl.gallery", "flar2.homebutton",
-            "com.liskovsoft.smarttubetv.beta");
+            "com.liskovsoft.smarttubetv.beta", "to.prehraj.app");
         PACKAGES = Collections.unmodifiableSet(packages);
     }
     private NativeLaunchPolicy() {}

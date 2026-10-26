@@ -8,7 +8,7 @@ const APPS = new Map([
   ['youtube music', 'com.google.android.youtube.tvmusic'], ['youtube kids', 'com.google.android.youtube.tvkids'],
   ['centrum medii', 'com.tcl.ui_mediaCenter'], ['prohlizec', 'com.tcl.browser'], ['galerie', 'com.tcl.gallery'],
   ['button mapper', 'flar2.homebutton'],
-  ['smarttube', 'com.liskovsoft.smarttubetv.beta'], ['smart tube', 'com.liskovsoft.smarttubetv.beta'],
+  ['smarttube', 'com.liskovsoft.smarttubetv.beta'], ['smart tube', 'com.liskovsoft.smarttubetv.beta'], ['prehraj to', 'to.prehraj.app'], ['prehrajto', 'to.prehraj.app'],
 ]);
 const PACKAGES = new Set(APPS.values());
 const norm = value => value.normalize('NFKD').replace(/\p{M}/gu, '').toLowerCase().replace(/[+]/g, ' plus ').replace(/[.,!?;:]+$/g, '').replace(/\s+/g, ' ').trim();
