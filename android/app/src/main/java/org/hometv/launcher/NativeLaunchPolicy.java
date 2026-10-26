@@ -23,7 +23,7 @@ public final class NativeLaunchPolicy {
             "com.google.android.youtube.tvmusic", "com.google.android.youtube.tvkids",
             "com.tcl.ui_mediaCenter", "com.tcl.browser", "com.tcl.gallery", "flar2.homebutton",
             "com.liskovsoft.smarttubetv.beta", "to.prehraj.app",
-            GOOGLE_TV_HOME, "nextapp.fx");
+            GOOGLE_TV_HOME, "com.sony.dtv.smartmediaapp");
         PACKAGES = Collections.unmodifiableSet(packages);
     }
     private NativeLaunchPolicy() {}

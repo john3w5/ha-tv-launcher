@@ -9,7 +9,7 @@ const APPS = new Map([
   ['centrum medii', 'com.tcl.ui_mediaCenter'], ['prohlizec', 'com.tcl.browser'], ['galerie', 'com.tcl.gallery'],
   ['button mapper', 'flar2.homebutton'],
   ['smarttube', 'com.liskovsoft.smarttubetv.beta'], ['smart tube', 'com.liskovsoft.smarttubetv.beta'], ['prehraj to', 'to.prehraj.app'], ['prehrajto', 'to.prehraj.app'],
-  ['google tv', 'com.google.android.apps.tv.launcherx'], ['soubory', 'nextapp.fx'], ['fx', 'nextapp.fx'],
+  ['google tv', 'com.google.android.apps.tv.launcherx'], ['media player', 'com.sony.dtv.smartmediaapp'], ['prehravac medii', 'com.sony.dtv.smartmediaapp'], ['soubory', 'com.sony.dtv.smartmediaapp'],
 ]);
 const PACKAGES = new Set(APPS.values());
 const norm = value => value.normalize('NFKD').replace(/\p{M}/gu, '').toLowerCase().replace(/[+]/g, ' plus ').replace(/[.,!?;:]+$/g, '').replace(/\s+/g, ' ').trim();

@@ -475,7 +475,7 @@ class NativeTvView(context: Context) : View(context) {
             paint.color = Color.WHITE; path.reset(); path.moveTo(logo.left + 14f, logo.top + 6f); path.lineTo(logo.left + 25f, logo.centerY()); path.lineTo(logo.left + 14f, logo.bottom - 6f); path.close(); c.drawPath(path, paint)
             paint.color = Color.rgb(23, 25, 29); paint.textSize = 26f; paint.typeface = brandFace; c.drawText("YouTube", left + 44f, r.centerY() + 9f, paint)
         } else if (app.id !in listOf(NETFLIX, "net.cme.voyo.cz.tvapp", "cz.prima.tvapp", "com.spotify.tv.android", "org.videolan.vlc")) {
-            val glyph = when (app.id) { NativeLaunchPolicy.GOOGLE_TV_HOME -> "home"; "nextapp.fx" -> "photo"; "com.tcl.gallery" -> "photo"; "com.tcl.browser" -> "compass"; "com.tcl.ui_mediaCenter" -> "play"; "flar2.homebutton" -> "remote"; else -> "play" }
+            val glyph = when (app.id) { NativeLaunchPolicy.GOOGLE_TV_HOME -> "home"; "com.sony.dtv.smartmediaapp" -> "photo"; "com.tcl.gallery" -> "photo"; "com.tcl.browser" -> "compass"; "com.tcl.ui_mediaCenter" -> "play"; "flar2.homebutton" -> "remote"; else -> "play" }
             icon(c, glyph, r.centerX() - 14f, r.centerY() - 33f, 28f, Color.WHITE)
             centered(c, app.mark, r.centerX(), r.centerY() + 28f, 23f, Color.WHITE, true)
         } else {
@@ -956,7 +956,7 @@ class NativeTvView(context: Context) : View(context) {
         // Order matters: the first six installed apps form the home row.
         private val APPS = listOf(
             App("net.cme.voyo.cz.tvapp", "Oneplay", "oneplay", Color.rgb(88, 42, 115)), App(NETFLIX, "Netflix", "NETFLIX", Color.rgb(79, 14, 27)), App("to.prehraj.app", "Přehraj.to", "Přehraj.to", Color.rgb(30, 90, 160)),
-            App("com.liskovsoft.smarttubetv.beta", "SmartTube", "SmartTube", Color.rgb(180, 30, 40)), App(NativeLaunchPolicy.GOOGLE_TV_HOME, "Google TV", "Google TV", Color.rgb(52, 98, 160)), App("nextapp.fx", "FX Soubory", "Soubory", Color.rgb(70, 110, 80)),
+            App("com.liskovsoft.smarttubetv.beta", "SmartTube", "SmartTube", Color.rgb(180, 30, 40)), App(NativeLaunchPolicy.GOOGLE_TV_HOME, "Google TV", "Google TV", Color.rgb(52, 98, 160)), App("com.sony.dtv.smartmediaapp", "Přehrávač médií", "Média", Color.rgb(70, 110, 80)),
             App("com.google.android.youtube.tv", "YouTube", "YouTube", Color.rgb(153, 44, 48)), App("com.google.android.youtube.tvmusic", "YouTube Music", "Music", Color.rgb(141, 50, 61)), App("com.google.android.youtube.tvkids", "YouTube Kids", "Kids", Color.rgb(150, 58, 69)),
             App("cz.prima.tvapp", "prima+", "prima+", Color.rgb(42, 94, 85)), App("com.spotify.tv.android", "Spotify", "Spotify", Color.rgb(47, 99, 75)), App("org.videolan.vlc", "VLC", "VLC", Color.rgb(152, 100, 42)),
             App("com.tcl.ui_mediaCenter", "Centrum médií", "Média", Color.rgb(83, 80, 112)), App("com.tcl.browser", "Prohlížeč", "Web", Color.rgb(53, 99, 121)), App("com.tcl.gallery", "Galerie", "Fotky", Color.rgb(78, 109, 88)),
