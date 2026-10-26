@@ -581,8 +581,13 @@ class NativeDialogController(
     fun showControls(sectionId: String = "lights", pageIndex: Int = 0): Unit = ui {
         val p = open("Ovládací centrum", height = 540) ?: return@ui
         val capability = controls()
+        // Light-role switches with area "Topení" are heating presets; they get their own tab.
+        val heatingIds = homeState().optJSONArray("lights").let { all -> (0 until (all?.length() ?: 0)).mapNotNull { all?.optJSONObject(it) } }
+            .filter { it.optString("area") == NativeTvView.HEATING_AREA }.map { it.optString("entityId") }.toSet()
+        val sections = listOfNotNull("lights" to "Světla", if (heatingIds.isNotEmpty()) "heating" to "Topení" else null,
+            if ((capability.optJSONArray("temperatures")?.length() ?: 0) > 0) "temperature" to "Teplota" else null, "tv" to "Televize")
         val tabs = LinearLayout(activity)
-        for ((id, name) in listOf("lights" to "Světla", "temperature" to "Teplota", "tv" to "Televize")) {
+        for ((id, name) in sections) {
             tabs.addView(button(name) { showControls(id) }.apply { isSelected = sectionId == id }, LinearLayout.LayoutParams(0, unit(46), 1f).apply { marginEnd = unit(6) })
         }
         p.content.addView(tabs)
@@ -610,26 +615,35 @@ class NativeDialogController(
             addButton(p, "Ovládání z telefonu") { showMobilePairing() }
             addButton(p, "Nastavení Android TV") { closeNow(); openSettings() }
         } else {
-            val list = capability.optJSONArray(if (sectionId == "lights") "lights" else "temperatures") ?: JSONArray()
-            val pages = ((list.length() + 2) / 3).coerceAtLeast(1)
+            val switches = sectionId in listOf("lights", "heating")
+            val all = capability.optJSONArray(if (switches) "lights" else "temperatures") ?: JSONArray()
+            val list = (0 until all.length()).mapNotNull { all.optJSONObject(it) }.filter { item ->
+                when (sectionId) { "lights" -> item.optString("id") !in heatingIds; "heating" -> item.optString("id") in heatingIds; else -> true }
+            }
+            val pages = ((list.size + 2) / 3).coerceAtLeast(1)
             val page = pageIndex.coerceIn(0, pages - 1)
             if (!capability.optBoolean("available")) text(p, "Ovládání domácnosti není připojené.")
-            if (list.length() == 0) text(p, "Zatím tu nejsou nastavené žádné prvky.")
-            for (index in page * 3 until minOf(list.length(), page * 3 + 3)) {
-                val item = list.optJSONObject(index) ?: continue
+            if (list.isEmpty()) text(p, "Zatím tu nejsou nastavené žádné prvky.")
+            for (index in page * 3 until minOf(list.size, page * 3 + 3)) {
+                val item = list[index]
                 val id = item.optString("id")
                 val row = LinearLayout(activity).apply { gravity = Gravity.CENTER_VERTICAL }
-                val stateItems = if (sectionId == "lights") homeState().optJSONArray("lights") else domestic().optJSONArray("rooms")
-                val state = (0 until (stateItems?.length() ?: 0)).mapNotNull { stateItems?.optJSONObject(it) }.firstOrNull { it.optString(if (sectionId == "lights") "entityId" else "id") == id }
-                val subtitle = if (sectionId == "lights") when (state?.optString("state")) { "on" -> "Zapnuto"; "off" -> "Vypnuto"; else -> "Stav neověřený" }
-                    else (state?.opt("targetTemperature") as? Number)?.let { "$it °C" } ?: "Automatický rozsah · jen náhled"
-                row.addView(settingsText(item.optString("name", "Domov") + "\n" + subtitle, 15f, false), LinearLayout.LayoutParams(0, -2, 1f))
+                val stateItems = if (switches) homeState().optJSONArray("lights") else domestic().optJSONArray("rooms")
+                val state = (0 until (stateItems?.length() ?: 0)).mapNotNull { stateItems?.optJSONObject(it) }.firstOrNull { it.optString(if (switches) "entityId" else "id") == id }
+                val subtitle = when (sectionId) {
+                    "lights" -> when (state?.optString("state")) { "on" -> "Zapnuto"; "off" -> "Vypnuto"; else -> "Stav neověřený" }
+                    "heating" -> when (state?.optString("state")) { "on" -> "Topí"; "off" -> "Vypnuto · 4 °C"; else -> "Stav neověřený" }
+                    else -> (state?.opt("targetTemperature") as? Number)?.let { "$it °C" } ?: "Automatický rozsah · jen náhled"
+                }
+                val name = item.optString("name", "Domov").let { if (sectionId == "heating") it.substringBefore(" (") else it }
+                row.addView(settingsText(name + "\n" + subtitle, 15f, false), LinearLayout.LayoutParams(0, -2, 1f))
                 val buttons = ArrayList<Button>()
-                if (sectionId == "lights") {
-                    for ((label, on) in listOf("Zapnout" to true, "Vypnout" to false)) {
+                if (switches) {
+                    val labels = if (sectionId == "heating") listOf("Topit naplno" to true, "Vypnout" to false) else listOf("Zapnout" to true, "Vypnout" to false)
+                    for ((label, on) in labels) {
                         val b = button(label) { send(buttons, JSONObject().put("type", "light").put("id", id).put("on", on)) }
                         b.isEnabled = capability.optBoolean("available") && state?.optString("state") in listOf("on", "off")
-                        buttons.add(b); row.addView(b, LinearLayout.LayoutParams(unit(108), unit(46)).apply { marginStart = unit(8) })
+                        buttons.add(b); row.addView(b, LinearLayout.LayoutParams(unit(if (sectionId == "heating") 150 else 108), unit(46)).apply { marginStart = unit(8) })
                     }
                 } else {
                     for ((label, delta) in listOf("−0,5°" to -0.5, "+0,5°" to 0.5)) {
@@ -648,7 +662,7 @@ class NativeDialogController(
             }
             p.status.text = "Strana ${page + 1}/$pages"
         }
-        tabs.getChildAt(listOf("lights", "temperature", "tv").indexOf(sectionId).coerceAtLeast(0))?.requestFocus()
+        tabs.getChildAt(sections.map { it.first }.indexOf(sectionId).coerceAtLeast(0))?.requestFocus()
     }
 
     private fun parseExpiry(value: String): Long? {

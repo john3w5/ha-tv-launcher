@@ -527,6 +527,7 @@ class MainActivity : Activity() {
             action == "photos" -> startSaver()
             action == "night" -> dialogs.showNightPlan()
             action == "kino" -> dialogs.showKino()
+            action == "heating" -> dialogs.showControls("heating")
             action == "map:google" -> googleMap.openExpanded()
             action.startsWith("camera:") -> {
                 val id = action.removePrefix("camera:")

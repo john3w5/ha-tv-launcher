@@ -515,6 +515,8 @@ class NativeTvView(context: Context) : View(context) {
         val home = data().obj("home"); val locks = home.array("locks").objects()
         // Switches with area "Topení" are heating presets shown in controls, not lights.
         val lights = home.array("lights").objects().filter { it.string("role") != "controller-status" && it.string("area") != HEATING_AREA }
+        val heating = home.array("lights").objects().filter { it.string("area") == HEATING_AREA }
+        val heatingOn = heating.count { it.string("state") == "on" }
         val unlocked = locks.any { it.string("state") == "unlocked" }
         val lockText = when { locks.any { it.string("state") !in listOf("locked", "unlocked") } -> "Stav neznámý"; unlocked -> "Odemčeno"; else -> "Zamčeno" }
         val on = lights.filter { it.string("state") == "on" }; val lightText = if (on.isNotEmpty()) "Svítí · " + on.take(2).joinToString(", ") { it.string("area", it.string("name")) } else if (lights.isEmpty() || lights.any { it.string("state") !in listOf("on", "off") }) "Světla · neúplný stav" else "Vybraná světla zhasnutá"
@@ -524,6 +526,7 @@ class NativeTvView(context: Context) : View(context) {
         if (lights.isNotEmpty()) { icon(c, "bulb", x, 749f, 18f, if (on.isNotEmpty()) Color.rgb(189, 153, 86) else muted()); text(c, lightText, x + 28f, 765f, 12f, ink(), 455f) }
         val buttons = listOfNotNull(
             if (securityConfigured()) Pair("household:security", "Zabezpečení") to 175f else null,
+            if (heating.isNotEmpty()) Pair("heating", if (heatingOn > 0) "Topení · topí $heatingOn" else "Topení") to 190f else null,
             Pair("kino", "Kino") to 100f,
             if (nightAvailable()) Pair("night", "Dobrou noc") to 165f else null)
         var right = 1386f
@@ -532,7 +535,7 @@ class NativeTvView(context: Context) : View(context) {
         placed.forEach { (id, label, b) ->
             target(id, label, b, "status"); focus(c, id, b, 16f)
             paint.textSize = 12f; paint.typeface = regularFace; val left = b.centerX() - (paint.measureText(label) + 26f) / 2f
-            icon(c, when (id) { "kino" -> "play"; "night" -> "moon"; else -> "shield" }, left, 749f, 18f, ink())
+            icon(c, when (id) { "kino" -> "play"; "night" -> "moon"; "heating" -> "thermometer"; else -> "shield" }, left, 749f, 18f, ink())
             text(c, label, left + 26f, 765f, 12f, ink(), b.width() - 35f)
         }
     }
