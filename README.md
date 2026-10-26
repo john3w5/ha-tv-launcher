@@ -95,6 +95,10 @@ Poslední příkaz ověřuje shodu dodávané aplikace Home Assistantu se zdrojo
 
 CI spouští kontroly pro Node.js 22 a testy balíku Home Assistantu. Úspěšné sestavení nebo automatický test samy nepotvrzují plynulost videa ani kompatibilitu fyzické televize. Tyto vlastnosti potřebují samostatnou zkoušku na zařízení. Aktuální hranice popisují [známá omezení](docs/limitations.md).
 
+## Podpora vývoje
+
+Pokud vám projekt pomáhá, můžete mi [koupit kafe ☕](https://ko-fi.com/michalschoniger) a podpořit jeho další vývoj. Děkuji!
+
 ## Licence a autorství
 
 Vlastní kód projektu je pod licencí [MIT](LICENSE). Přibalené komponenty a sestavovací nástroje si zachovávají své licence; podrobnosti jsou v [informacích o třetích stranách](THIRD_PARTY_NOTICES.md).
