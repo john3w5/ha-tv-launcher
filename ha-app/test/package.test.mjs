@@ -124,7 +124,7 @@ test('package maps the source app template to config.yaml and excludes all perso
   assert.equal(manifest.privateDataIncluded, false);
   const names = manifest.files.map(item => item.path); assert(names.includes('config.yaml')); assert(!names.includes('app-config.yaml'));
   assert(!names.some(name => /(^|\/)\.env|private|runtime\/config\.json/.test(name)));
-  const metadata = await readFile(path.join(destination, 'config.yaml'), 'utf8'); assert(metadata.includes('slug: "home_tv_launcher"')); assert(metadata.includes('version: "0.1.1"'));
+  const metadata = await readFile(path.join(destination, 'config.yaml'), 'utf8'); assert(metadata.includes('slug: "home_tv_launcher"')); assert(metadata.includes('version: "0.1.2"'));
   for (const file of manifest.files) assert(!(await readFile(path.join(destination, file.path), 'utf8')).includes('TEST-PRIVATE-SENTINEL'));
   await assert.rejects(() => prepare(destination, { source: f.source }), /already exists/);
   await assert.rejects(() => stat(new URL('../config.yaml', import.meta.url)), { code: 'ENOENT' });

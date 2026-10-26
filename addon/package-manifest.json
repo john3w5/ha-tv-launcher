@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-10-26T20:22:18.359Z",
+  "generatedAt": "2026-10-26T22:39:32.127Z",
   "privateDataIncluded": false,
   "files": [
     {
@@ -11,7 +11,7 @@
     {
       "path": "runtime/package.json",
       "bytes": 500,
-      "sha256": "2c80ff34f7fa162b3223a564bddda46dabe4d3a01cb87dd7445a79e8e2b4b67b"
+      "sha256": "46278f39291f3e1a17bf673bf134ba484ad7f38235b90cc1ead6ad51a4127feb"
     },
     {
       "path": "runtime/config.example.json",
@@ -260,8 +260,8 @@
     },
     {
       "path": "runtime/lib/native-assistant-service.mjs",
-      "bytes": 13959,
-      "sha256": "0bd0ff91b3d47df1db061b6ba57ad2f95cfc06397879ae06fe64801eaebebd37"
+      "bytes": 14065,
+      "sha256": "39774faa314b8ad13c633cfe4dc715ab2b450688abe70176e5a8ae7143f61e58"
     },
     {
       "path": "runtime/lib/night-service.mjs",
@@ -336,7 +336,7 @@
     {
       "path": "config.yaml",
       "bytes": 925,
-      "sha256": "d2aeac2bcbd5ec3d93263b955d17458a6ae5253204833852d6ecb5cbfd68c31a"
+      "sha256": "206dad937b85dc9d8eb42ce1ac8dc0f8ee114bc69b4336cc7ed373a07b38102d"
     }
   ]
 }

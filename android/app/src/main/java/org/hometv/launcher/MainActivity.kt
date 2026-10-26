@@ -235,7 +235,7 @@ class MainActivity : Activity() {
         TvOverlayService.foregroundPower = { value -> if (resumed) applyPower(value) }
         TvOverlayService.foregroundPowerStatus = { value ->
             if (resumed && value.opt("connected") == false) {
-                val id = dashboard.optJSONObject("domestic")?.optJSONObject("energy")?.optJSONObject("power")?.optString("entityId").orEmpty()
+                val id = entityIdOf(dashboard.optJSONObject("domestic")?.optJSONObject("energy")?.optJSONObject("power"))
                 if (id.isNotBlank()) applyPower(JSONObject().put("entityId", id).put("available", false))
             }
         }
@@ -656,10 +656,12 @@ class MainActivity : Activity() {
         if (!sound) audio.invalidate()
         applyAppearance()
     }
+    // optString() turns a JSON null into the text "null"; an unconfigured meter must stay empty.
+    private fun entityIdOf(o: JSONObject?): String = if (o == null || o.isNull("entityId")) "" else o.optString("entityId")
     private fun applyPower(value: JSONObject) {
         val energy = dashboard.optJSONObject("domestic")?.optJSONObject("energy") ?: return
-        val expected = energy.optJSONObject("power")?.optString("entityId").orEmpty()
-        if (expected.isBlank() || value.optString("entityId") != expected || value.opt("available") !is Boolean) return
+        val expected = entityIdOf(energy.optJSONObject("power"))
+        if (expected.isBlank() || entityIdOf(value) != expected || value.opt("available") !is Boolean) return
         val old = energy.optJSONObject("power")?.optString("updatedAt").orEmpty()
         val incoming = value.optString("updatedAt")
         if (value.optBoolean("available")) {

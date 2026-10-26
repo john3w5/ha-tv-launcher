@@ -12,6 +12,8 @@ public final class NativeLaunchPolicy {
         public final String appId;
         private Action(Kind kind, String appId) { this.kind = kind; this.appId = appId; }
     }
+    /** The system Google TV home; launched through its HOME entry, not a launcher icon. */
+    public static final String GOOGLE_TV_HOME = "com.google.android.apps.tv.launcherx";
     private static final Set<String> PACKAGES;
     static {
         LinkedHashSet<String> packages = new LinkedHashSet<>();
@@ -20,7 +22,8 @@ public final class NativeLaunchPolicy {
             "com.google.android.youtube.tv", "com.spotify.tv.android", "org.videolan.vlc",
             "com.google.android.youtube.tvmusic", "com.google.android.youtube.tvkids",
             "com.tcl.ui_mediaCenter", "com.tcl.browser", "com.tcl.gallery", "flar2.homebutton",
-            "com.liskovsoft.smarttubetv.beta", "to.prehraj.app");
+            "com.liskovsoft.smarttubetv.beta", "to.prehraj.app",
+            GOOGLE_TV_HOME, "nextapp.fx");
         PACKAGES = Collections.unmodifiableSet(packages);
     }
     private NativeLaunchPolicy() {}

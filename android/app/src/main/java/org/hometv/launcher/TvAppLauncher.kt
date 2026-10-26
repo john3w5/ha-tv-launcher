@@ -14,7 +14,8 @@ class TvAppLauncher(private val pm: PackageManager) {
         val packageEnabled = runCatching { enabled(pm.getApplicationEnabledSetting(appId)) }.getOrDefault(false)
         if (!app.enabled || !packageEnabled || (app.flags and ApplicationInfo.FLAG_SUSPENDED) != 0) return null
         // TV-specific entry first; ordinary launcher entry is the native fallback.
-        for (category in listOf(Intent.CATEGORY_LEANBACK_LAUNCHER, Intent.CATEGORY_LAUNCHER)) {
+        val categories = if (appId == NativeLaunchPolicy.GOOGLE_TV_HOME) listOf(Intent.CATEGORY_HOME) else listOf(Intent.CATEGORY_LEANBACK_LAUNCHER, Intent.CATEGORY_LAUNCHER)
+        for (category in categories) {
             val query = Intent(Intent.ACTION_MAIN).addCategory(category).setPackage(appId)
             val matches = runCatching { pm.queryIntentActivities(query, 0) }.getOrDefault(emptyList())
             for (match in matches.sortedBy { it.activityInfo?.name.orEmpty() }) {
