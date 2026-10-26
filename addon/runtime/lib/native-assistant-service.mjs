@@ -8,6 +8,7 @@ const APPS = new Map([
   ['youtube music', 'com.google.android.youtube.tvmusic'], ['youtube kids', 'com.google.android.youtube.tvkids'],
   ['centrum medii', 'com.tcl.ui_mediaCenter'], ['prohlizec', 'com.tcl.browser'], ['galerie', 'com.tcl.gallery'],
   ['button mapper', 'flar2.homebutton'],
+  ['smarttube', 'com.liskovsoft.smarttubetv.beta'], ['smart tube', 'com.liskovsoft.smarttubetv.beta'],
 ]);
 const PACKAGES = new Set(APPS.values());
 const norm = value => value.normalize('NFKD').replace(/\p{M}/gu, '').toLowerCase().replace(/[+]/g, ' plus ').replace(/[.,!?;:]+$/g, '').replace(/\s+/g, ' ').trim();
@@ -82,7 +83,7 @@ export function createNativeAssistantService({ ha, readStatus, resolvePrima = re
     async request({ text: input, installedApps = [], session } = {}) {
       owner(session);
       if (typeof input !== 'string' || !input.trim() || input.length > 500 || /[\u0000-\u001f\u007f]/.test(input)) throw new NativeAssistantError('invalid_input', 400, 'Povel musí mít 1 až 500 znaků.');
-      if (!Array.isArray(installedApps) || installedApps.length > 12 || installedApps.some(id => typeof id !== 'string' || !PACKAGES.has(id)) || new Set(installedApps).size !== installedApps.length) throw new NativeAssistantError('invalid_apps', 400, 'Seznam aplikací se nepodařilo ověřit.');
+      if (!Array.isArray(installedApps) || installedApps.length > PACKAGES.size || installedApps.some(id => typeof id !== 'string' || !PACKAGES.has(id)) || new Set(installedApps).size !== installedApps.length) throw new NativeAssistantError('invalid_apps', 400, 'Seznam aplikací se nepodařilo ověřit.');
       const query = norm(input), installed = new Set(installedApps);
       const unsupported = reply => ({ status: 'unsupported', reply, provider });
       if (/\b(?:https?|file|intent|javascript|content|adb|ssh):|\b(?:restart|reset|odinstal|smaz|vymaz|firmware|token|heslo|pin)\b/.test(query)) return unsupported('Tento systémový nebo technický povel není podporovaný.');

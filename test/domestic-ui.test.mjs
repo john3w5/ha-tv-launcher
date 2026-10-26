@@ -7,7 +7,8 @@ import { readDomesticPanel } from '../lib/domestic-panel.mjs';
 const source = await readFile(new URL('../public/domestic-ui.js', import.meta.url), 'utf8');
 const NOW = Date.parse('2026-10-23T18:00:00Z');
 const esc = value => String(value ?? '').replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
-const measure = (value = null, unit = 'W', available = value !== null) => ({ value, unit, available });
+// The backend names entityId only for sources configured in the installation.
+const measure = (value = null, unit = 'W', available = value !== null) => ({ entityId: 'sensor.test', value, unit, available });
 const washerConfig = { washer: { jobEntityId: 'sensor.job', machineEntityId: 'sensor.machine', completionEntityId: 'sensor.end', progressEntityId: 'sensor.progress' } };
 const state = (entity_id, value, attributes = {}) => ({ entity_id, state: String(value), attributes });
 const washer = (machine = 'run', job = 'wash', end = '2026-10-23T18:30:00Z', progress) => readDomesticPanel(washerConfig, {
@@ -71,7 +72,7 @@ test('missing or nonnumeric readings stay missing while measured zero and escape
 });
 
 test('energy displays independent source readings without deriving a balance, percentages or price', () => {
-  const h = harness({ energy: { powerW: 1200, todayKWh: 3.25, consumers: [{ name: 'Bojler', powerW: 900 }, { name: 'Lednice', powerW: 150 }, { name: 'Chybějící', powerW: null }] } });
+  const h = harness({ energy: { power: measure(1200), today: measure(3.25, 'kWh'), powerW: 1200, todayKWh: 3.25, consumers: [{ name: 'Bojler', powerW: 900 }, { name: 'Lednice', powerW: 150 }, { name: 'Chybějící', powerW: null }] } });
   const html = h.ui.domesticEnergy();
   assert.match(html, /1,2 kW/); assert.match(html, /3,25 kWh/); assert.doesNotMatch(html, /900 W/); assert.doesNotMatch(html, /150 W/);
   assert.doesNotMatch(html, /Chybějící|energy-distribution|energy-consumers/);
@@ -313,4 +314,14 @@ test('map image errors expose a manual retry without polling or device calls', (
   assert.equal(image.classList.contains('hidden'), false); assert.equal(error.classList.contains('hidden'), true);
   assert.deepEqual(h.imageRequests, ['/api/vacuum/map']); assert.equal(h.requests.length, 0);
   assert.equal(image.events.get('error').length, 1);
+});
+
+test('live installations hide cards and sections whose sources are not configured', () => {
+  const h = harness({ energy: { powerW: null, consumers: [{ name: 'Zásuvka', powerW: 5 }] }, water: { valves: [] }, hotWater: {}, washer: {}, vacuum: { map: { available: false } },
+    roomsContractVersion: 2, rooms: [{ id: 'obyvak', name: 'Obývák', temperature: measure(23.4, '°C'), humidity: measure(51, '%'), co2: measure(null, 'ppm', false), presence: [], equipment: [] }] });
+  assert.match(h.ui.domesticEnergy(), /Zásuvka/); assert.doesNotMatch(h.ui.domesticEnergy(), /Celkový příkon/);
+  assert.equal(h.ui.domesticWater(), '');
+  const quick = h.ui.domesticQuickMarkup();
+  assert.match(quick, /Obývák/); assert.doesNotMatch(quick, /Dům právě teď|Hladina studny|Pračka|Vzduch v ložnici/);
+  h.ui.render(); assert.doesNotMatch(h.markup, /data-domestic-section="cleaning"/); assert.match(h.markup, /data-domestic-section="overview"/);
 });

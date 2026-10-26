@@ -7,7 +7,7 @@ public final class NativeLaunchPolicyTest {
         return NativeLaunchPolicy.authorize(uri, true, true, true, true, true, true, false);
     }
     public static void main(String[] args) {
-        check(NativeLaunchPolicy.allowedPackages().size() == 12, "Exact twelve approved packages");
+        check(NativeLaunchPolicy.allowedPackages().size() == 13, "Exact thirteen approved packages");
         for (String app : NativeLaunchPolicy.allowedPackages()) {
             var action = allow("hometv://launch?appId=" + app);
             check(action != null && action.kind == NativeLaunchPolicy.Kind.LAUNCH && app.equals(action.appId), "Approved exact package " + app);

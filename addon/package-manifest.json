@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-10-26T14:03:33.482Z",
+  "generatedAt": "2026-10-26T20:21:32.049Z",
   "privateDataIncluded": false,
   "files": [
     {
@@ -11,7 +11,7 @@
     {
       "path": "runtime/package.json",
       "bytes": 500,
-      "sha256": "8394bc9b3c753cedcf416ab0e2165d79786964a386286445f3aefae258b19bf7"
+      "sha256": "2c80ff34f7fa162b3223a564bddda46dabe4d3a01cb87dd7445a79e8e2b4b67b"
     },
     {
       "path": "runtime/config.example.json",
@@ -25,8 +25,8 @@
     },
     {
       "path": "runtime/public/app.js",
-      "bytes": 84528,
-      "sha256": "64884bcf88a81a0cf7510efd13679346cb90495cd63782d7e67f7806e1a1bd9c"
+      "bytes": 84547,
+      "sha256": "49b6ee77a4f876a2e1c939024b4276a0fbe7e7c088b5a52627758f5598e92c68"
     },
     {
       "path": "runtime/public/apps/relax/app.js",
@@ -80,8 +80,8 @@
     },
     {
       "path": "runtime/public/domestic-ui.js",
-      "bytes": 22912,
-      "sha256": "42022e34ef4c6d3fbc003ea2db85f4905ab03ec53c0d15d250d283a44630679f"
+      "bytes": 25828,
+      "sha256": "cfea4f99a867dc8f90dcf32e67c6121f2740b29fc62dc451545ebef51365c2b1"
     },
     {
       "path": "runtime/public/favicon.svg",
@@ -260,8 +260,8 @@
     },
     {
       "path": "runtime/lib/native-assistant-service.mjs",
-      "bytes": 13778,
-      "sha256": "49e8a90ce1836f9b7664412da784773bc2116403c9a5926e2bd8654c3e79e9c9"
+      "bytes": 13892,
+      "sha256": "fb28603e8b8cef4d0c57cf3207377a949517436a793bdce7d9a375c7830179d6"
     },
     {
       "path": "runtime/lib/night-service.mjs",
@@ -336,7 +336,7 @@
     {
       "path": "config.yaml",
       "bytes": 925,
-      "sha256": "c56c4db38170553ee504c527f5bdf413dbf377aa7ca9e0fbe8986d7dce5c4151"
+      "sha256": "d2aeac2bcbd5ec3d93263b955d17458a6ae5253204833852d6ecb5cbfd68c31a"
     }
   ]
 }

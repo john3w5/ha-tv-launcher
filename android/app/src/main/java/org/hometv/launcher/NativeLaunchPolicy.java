@@ -19,7 +19,8 @@ public final class NativeLaunchPolicy {
             "com.netflix.ninja", "net.cme.voyo.cz.tvapp", "cz.prima.tvapp",
             "com.google.android.youtube.tv", "com.spotify.tv.android", "org.videolan.vlc",
             "com.google.android.youtube.tvmusic", "com.google.android.youtube.tvkids",
-            "com.tcl.ui_mediaCenter", "com.tcl.browser", "com.tcl.gallery", "flar2.homebutton");
+            "com.tcl.ui_mediaCenter", "com.tcl.browser", "com.tcl.gallery", "flar2.homebutton",
+            "com.liskovsoft.smarttubetv.beta");
         PACKAGES = Collections.unmodifiableSet(packages);
     }
     private NativeLaunchPolicy() {}

@@ -16,7 +16,7 @@ async function collect(directory, prefix = '') {
   const selected = [];
   for (const entry of await readdir(directory, { withFileTypes: true })) {
     if (rejected(entry.name)) continue;
-    const relative = path.join(prefix, entry.name), filename = path.join(directory, entry.name);
+    const relative = path.posix.join(prefix, entry.name), filename = path.join(directory, entry.name);
     if (entry.isSymbolicLink()) throw new Error('A package source must not be a symbolic link.');
     if (entry.isDirectory()) selected.push(...await collect(filename, relative));
     else if (entry.isFile()) selected.push(relative);
@@ -35,11 +35,11 @@ export async function prepare(destination, { source = REPO } = {}) {
     if (info?.isSymbolicLink() || (info && !info.isDirectory())) throw new Error('Package destination has an unsafe parent.');
     const parent = path.dirname(current); if (parent === current) break; current = parent;
   }
-  const files = [...FILES.map(name => ({ from: path.join(source, name), to: path.join('runtime', name) }))];
+  const files = [...FILES.map(name => ({ from: path.join(source, name), to: path.posix.join('runtime', name) }))];
   for (const tree of ['public', 'lib']) {
     const info = await lstat(path.join(source, tree));
     if (!info.isDirectory() || info.isSymbolicLink()) throw new Error('Unsafe runtime source directory.');
-    for (const file of await collect(path.join(source, tree))) files.push({ from: path.join(source, tree, file), to: path.join('runtime', tree, file) });
+    for (const file of await collect(path.join(source, tree))) files.push({ from: path.join(source, tree, file), to: path.posix.join('runtime', tree, file) });
   }
   for (const file of PACKAGING) files.push({ from: path.join(HERE, file.from), to: file.to });
   const entries = [];
