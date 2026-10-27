@@ -643,6 +643,9 @@ class NativeDialogController(
                     for ((label, on) in labels) {
                         val b = button(label) { send(buttons, JSONObject().put("type", "light").put("id", id).put("on", on)) }
                         b.isEnabled = capability.optBoolean("available") && state?.optString("state") in listOf("on", "off")
+                        // The button matching the current state is shown selected, so on/off is visible at a glance.
+                        b.isSelected = state?.optString("state") == if (on) "on" else "off"
+                        if (b.isSelected) { b.tag = if (on) STATE_ON else STATE_OFF; b.background = currentStateBackground(on) }
                         buttons.add(b); row.addView(b, LinearLayout.LayoutParams(unit(if (sectionId == "heating") 150 else 108), unit(46)).apply { marginStart = unit(8) })
                     }
                 } else {
@@ -840,6 +843,11 @@ class NativeDialogController(
         }
     }
     private fun buttonShape(fill: Int) = GradientDrawable().apply { setColor(fill); cornerRadius = unitf(20f) }
+    /** Current on/off state: warm amber when switched on, plain steel when off; focus still wins. */
+    private fun currentStateBackground(on: Boolean) = StateListDrawable().apply {
+        addState(intArrayOf(android.R.attr.state_focused), buttonShape(if (isDark()) Color.rgb(73, 78, 88) else Color.rgb(217, 223, 232)))
+        addState(intArrayOf(), buttonShape(if (on) Color.rgb(176, 128, 52) else if (isDark()) Color.rgb(70, 76, 90) else Color.rgb(205, 212, 224)))
+    }
     private fun buttonBackground() = StateListDrawable().apply {
         addState(intArrayOf(android.R.attr.state_focused), buttonShape(if (isDark()) Color.rgb(73, 78, 88) else Color.rgb(217, 223, 232)))
         addState(intArrayOf(android.R.attr.state_pressed), buttonShape(if (isDark()) Color.rgb(85, 91, 102) else Color.rgb(203, 210, 220)))
@@ -851,7 +859,7 @@ class NativeDialogController(
         fun walk(view: View) {
             if (view is Button) {
                 val control = view.tag as? SettingControl
-                if (control != null) styleSettingButton(view, control) else { view.setTextColor(ink()); view.background = buttonBackground() }
+                if (control != null) styleSettingButton(view, control) else { view.setTextColor(ink()); view.background = when (view.tag) { STATE_ON -> currentStateBackground(true); STATE_OFF -> currentStateBackground(false); else -> buttonBackground() } }
             } else if (view is TextView) view.setTextColor(if (view === p.status || view.tag == "settings-secondary") mutedInk() else ink())
             if (view.tag == "settings-segments") view.background = settingsShape(if (isDark()) Color.argb(24, 255, 255, 255) else Color.argb(120, 255, 255, 255), 0, 25f)
             if (view.tag == "settings-sound-row") view.background = settingsShape(if (isDark()) Color.argb(12, 255, 255, 255) else Color.argb(85, 255, 255, 255), 0, 18f)
@@ -866,5 +874,6 @@ class NativeDialogController(
     fun close(): Unit = ui { closeNow() }
     fun onPause(): Unit = close()
     fun onDestroy(): Unit = ui { destroyed = true; closeNow() }
+    private companion object { const val STATE_ON = "state-on"; const val STATE_OFF = "state-off" }
     private fun closeNow(dismiss: Boolean = true) { confirmation.clear(); generation++; handler.removeCallbacksAndMessages(null); val old = panel; panel = null; if (dismiss) runCatching { old?.modal?.dismiss() } }
 }

@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-10-26T22:48:51.179Z",
+  "generatedAt": "2026-10-27T17:32:27.703Z",
   "privateDataIncluded": false,
   "files": [
     {
@@ -11,7 +11,7 @@
     {
       "path": "runtime/package.json",
       "bytes": 500,
-      "sha256": "31b2d2c2dc43cab25e9de292c8191a94971b74429bbd8bb6b64fc6b21a9ff86f"
+      "sha256": "7e3d02bc5e6510cbcba2ab9196fdad04eab890e9d9311bd1444ecd88ac169059"
     },
     {
       "path": "runtime/config.example.json",
@@ -80,8 +80,8 @@
     },
     {
       "path": "runtime/public/domestic-ui.js",
-      "bytes": 25828,
-      "sha256": "cfea4f99a867dc8f90dcf32e67c6121f2740b29fc62dc451545ebef51365c2b1"
+      "bytes": 27251,
+      "sha256": "f7aea76df1bb370fcccf5ed88dca4b15be0be2eedc89ee26568265834b254bd9"
     },
     {
       "path": "runtime/public/favicon.svg",
@@ -210,8 +210,8 @@
     },
     {
       "path": "runtime/lib/domestic-panel.mjs",
-      "bytes": 18017,
-      "sha256": "76afc4078aeae03afaace152443d53a2f1d6a3a40abda691e4b0bb132a5411de"
+      "bytes": 19529,
+      "sha256": "2ff428c4c3a26ab5296225f56a59a6ff840fc88b516ea667ecbe6641ebd66249"
     },
     {
       "path": "runtime/lib/entrance-door.mjs",
@@ -336,7 +336,7 @@
     {
       "path": "config.yaml",
       "bytes": 925,
-      "sha256": "24c3f9c3e96acbd7c506e0b112cd86d323a707f36806b4c87f9e0b8872245293"
+      "sha256": "b11fa001d2773813e2fb1ecd640f7ab2107f9649e27c3cb699ee4a4da3b93c86"
     }
   ]
 }

@@ -143,3 +143,20 @@ test('dashboard integrates domestic data from exactly one existing HA states rea
     { entities: { weather: {} }, safeScenes: [], calendarDays: 7, domesticPanel: config }, NOW);
   assert.equal(calls, 1); assert.equal(result.domestic.energy.powerW, 1200);
 });
+
+test('dishwasher countdown is an estimate from the HA timer start and never invents a running state', () => {
+  const now = new Date('2026-10-27T17:20:00Z');
+  const at = '2026-10-27T17:08:00+00:00';
+  const st = (entity_id, state, attributes = {}) => ({ entity_id, state, attributes, last_changed: at, last_updated: at });
+  const config = { dishwasher: { timerEntityId: 'timer.dish', powerEntityId: 'sensor.plug', estimateMinutes: 30 } };
+  const running = readDomesticPanel(config, { now, states: [st('timer.dish', 'active'), st('sensor.plug', '1850', { unit_of_measurement: 'W' })] }).dishwasher;
+  assert.equal(running.running, true); assert.equal(running.startedAt, '2026-10-27T17:08:00.000Z');
+  assert.equal(running.estimatedEnd, '2026-10-27T17:38:00.000Z'); assert.equal(running.remainingSeconds, 18 * 60); assert.equal(running.power.value, 1850);
+  const late = readDomesticPanel(config, { now: new Date('2026-10-27T18:00:00Z'), states: [st('timer.dish', 'active')] }).dishwasher;
+  assert.equal(late.running, true); assert.equal(late.remainingSeconds, 0);
+  const idle = readDomesticPanel(config, { now, states: [st('timer.dish', 'idle')] }).dishwasher;
+  assert.equal(idle.available, true); assert.equal(idle.running, false); assert.equal(idle.remainingSeconds, null);
+  const missing = readDomesticPanel(config, { now, states: [] }).dishwasher;
+  assert.equal(missing.available, false); assert.equal(missing.running, false);
+  assert.equal(readDomesticPanel({}, { now, states: [] }).dishwasher.entityId, null);
+});

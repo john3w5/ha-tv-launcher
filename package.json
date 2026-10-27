@@ -1,6 +1,6 @@
 {
   "name": "ha-tv-launcher",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Nativní launcher pro Android TV s nastavitelným propojením na Home Assistant",
   "type": "module",
   "engines": {

@@ -366,22 +366,25 @@ class NativeTvView(context: Context) : View(context) {
         val bedroom = rooms.find { it.string("id") == "bedroom" }
         // Only sources configured in this installation get a quick tile; free
         // slots show room temperatures instead of permanently missing values.
+        // [section, icon, label, value, "1" when the appliance is running]
         val entries = ArrayList<Array<String>>(4)
-        if (configured(d.obj("energy").obj("power"))) entries.add(arrayOf("overview", "energy", "Dům právě teď", power(d.obj("energy").number("powerW"))))
-        if (bedroom != null && configured(bedroom.obj("co2"))) entries.add(arrayOf("rooms", "wind", "Vzduch v ložnici", metric(bedroom.obj("co2"), 0)))
-        if (wellConfigured(d)) entries.add(arrayOf("overview", "drop", "Hladina studny a nádrže", metric(d.obj("water").obj("wellDepth"), 2) + "   ·   " + metric(d.obj("water").obj("tankDepth"), 2)))
-        if (washerConfigured(d)) entries.add(arrayOf("cleaning", "spark", "Pračka", status(d.obj("washer").obj("machine").string("state"))))
-        rooms.filter { configured(it.obj("temperature")) }.forEach { room ->
-            if (entries.size < 4) entries.add(arrayOf("rooms", "thermometer", room.string("name", "Místnost"),
-                metric(room.obj("temperature")) + if (configured(room.obj("humidity"))) "   ·   " + metric(room.obj("humidity"), 0) else ""))
+        // At most two room tiles come first; appliances and other sources follow.
+        rooms.filter { configured(it.obj("temperature")) }.take(2).forEach { room ->
+            entries.add(arrayOf("rooms", "thermometer", room.string("name", "Místnost"),
+                metric(room.obj("temperature")) + if (configured(room.obj("humidity"))) "   ·   " + metric(room.obj("humidity"), 0) else "", "0"))
         }
+        if (washerConfigured(d)) entries.add(arrayOf("cleaning", "washer", "Pračka", status(d.obj("washer").obj("machine").string("state")), if (d.obj("washer").optBoolean("running")) "1" else "0"))
+        if (dishwasherConfigured(d)) entries.add(arrayOf("cleaning", "dishwasher", d.obj("dishwasher").string("name", "Myčka"), dishwasherLabel(d.obj("dishwasher")), if (d.obj("dishwasher").optBoolean("running")) "1" else "0"))
+        if (configured(d.obj("energy").obj("power"))) entries.add(arrayOf("overview", "energy", "Dům právě teď", power(d.obj("energy").number("powerW")), "0"))
+        if (bedroom != null && configured(bedroom.obj("co2"))) entries.add(arrayOf("rooms", "wind", "Vzduch v ložnici", metric(bedroom.obj("co2"), 0), "0"))
+        if (wellConfigured(d)) entries.add(arrayOf("overview", "drop", "Hladina studny a nádrže", metric(d.obj("water").obj("wellDepth"), 2) + "   ·   " + metric(d.obj("water").obj("tankDepth"), 2), "0"))
         entries.take(4).forEachIndexed { index, item ->
             val r = RectF(34f + index * 347f, 404f, 365f + index * 347f, 474f)
             val action = "quick:${item[0]}:$index"; target(action, item[2], r, "quick")
             val saved = c.save()
             if (selection == action) { val scale = 1f + .025f * focusProgress; c.scale(scale, scale, r.centerX(), r.centerY()) }
-            card(c, r, 20f); focus(c, action, r, 20f)
-            icon(c, item[1], r.left + 17f, r.top + 24f, 22f, muted())
+            card(c, r, 20f); if (item[4] == "1") fill(c, r, activeFill(), 20f); focus(c, action, r, 20f)
+            icon(c, item[1], r.left + 17f, r.top + 24f, 22f, if (item[4] == "1") ACTIVE_ACCENT else muted())
             text(c, item[2], r.left + 53f, r.top + 25f, 12f, muted(), 248f)
             text(c, item[3], r.left + 53f, r.top + 51f, 18f, ink(), 248f, true)
             c.restoreToCount(saved)
@@ -519,24 +522,39 @@ class NativeTvView(context: Context) : View(context) {
         val heatingOn = heating.count { it.string("state") == "on" }
         val unlocked = locks.any { it.string("state") == "unlocked" }
         val lockText = when { locks.any { it.string("state") !in listOf("locked", "unlocked") } -> "Stav neznámý"; unlocked -> "Odemčeno"; else -> "Zamčeno" }
-        val on = lights.filter { it.string("state") == "on" }; val lightText = if (on.isNotEmpty()) "Svítí · " + on.take(2).joinToString(", ") { it.string("area", it.string("name")) } else if (lights.isEmpty() || lights.any { it.string("state") !in listOf("on", "off") }) "Světla · neúplný stav" else "Vybraná světla zhasnutá"
+        // Door contacts (fridge, freezer…) assigned to rooms as equipment.
+        val doors = data().obj("domestic").array("rooms").objects().flatMap { it.array("equipment").objects() }.filter { it.string("kind") == "door" }
+        val openDoors = doors.filter { it.opt("active") == true }
         icon(c, "home", 52f, 749f, 18f, muted()); text(c, "Stav domu", 79f, 766f, 12f, muted(), 115f)
         var x = 207f
         if (locks.isNotEmpty()) { icon(c, if (unlocked) "unlock" else "lock", x, 749f, 18f, muted()); text(c, lockText, x + 28f, 765f, 12f, ink(), 155f); x += 205f }
-        if (lights.isNotEmpty()) { icon(c, "bulb", x, 749f, 18f, if (on.isNotEmpty()) Color.rgb(189, 153, 86) else muted()); text(c, lightText, x + 28f, 765f, 12f, ink(), 455f) }
-        val buttons = listOfNotNull(
-            if (securityConfigured()) Pair("household:security", "Zabezpečení") to 175f else null,
-            if (heating.isNotEmpty()) Pair("heating", if (heatingOn > 0) "Topení · topí $heatingOn" else "Topení") to 190f else null,
-            Pair("kino", "Kino") to 100f,
-            if (nightAvailable()) Pair("night", "Dobrou noc") to 165f else null)
+        if (doors.isNotEmpty()) {
+            val doorText = doors.joinToString("   ·   ") { it.string("name", "Dveře") + ": " + when (it.opt("active")) { true -> "otevřeno"; false -> "zavřeno"; else -> "neznámý stav" } }
+            icon(c, if (openDoors.isNotEmpty()) "unlock" else "lock", x, 749f, 18f, if (openDoors.isNotEmpty()) ACTIVE_ACCENT else muted())
+            text(c, doorText, x + 28f, 765f, 12f, if (openDoors.isNotEmpty()) ACTIVE_ACCENT else ink(), 420f, openDoors.isNotEmpty())
+        }
+        // [action, label, icon, active]
+        val buttons = ArrayList<Array<Any>>()
+        if (securityConfigured()) buttons.add(arrayOf("household:security", "Zabezpečení", "shield", false))
+        lights.take(3).forEach { buttons.add(arrayOf("light:" + it.string("entityId"), it.string("name", "Světlo"), "bulb", it.string("state") == "on")) }
+        if (heating.isNotEmpty()) buttons.add(arrayOf("heating", if (heatingOn > 0) "Topení · topí $heatingOn" else "Topení", "thermometer", heatingOn > 0))
+        buttons.add(arrayOf("kino", "Kino", "play", false))
+        if (nightAvailable()) buttons.add(arrayOf("night", "Dobrou noc", "moon", false))
+        paint.textSize = 12f; paint.typeface = regularFace
         var right = 1386f
-        val placed = buttons.reversed().map { (item, width) -> val b = RectF(right - width, 740f, right, 776f); right -= width + 11f; Triple(item.first, item.second, b) }.reversed()
+        val placed = buttons.reversed().map { item ->
+            val width = maxOf(100f, paint.measureText(item[1] as String) + 62f)
+            val b = RectF(right - width, 740f, right, 776f); right -= width + 11f; item to b
+        }.reversed()
         line(c, right, 748f, right, 768f)
-        placed.forEach { (id, label, b) ->
-            target(id, label, b, "status"); focus(c, id, b, 16f)
+        placed.forEach { (item, b) ->
+            val id = item[0] as String; val label = item[1] as String; val active = item[3] as Boolean
+            target(id, label, b, "status")
+            if (active) fill(c, b, activeFill(), 16f)
+            focus(c, id, b, 16f)
             paint.textSize = 12f; paint.typeface = regularFace; val left = b.centerX() - (paint.measureText(label) + 26f) / 2f
-            icon(c, when (id) { "kino" -> "play"; "night" -> "moon"; "heating" -> "thermometer"; else -> "shield" }, left, 749f, 18f, ink())
-            text(c, label, left + 26f, 765f, 12f, ink(), b.width() - 35f)
+            icon(c, item[2] as String, left, 749f, 18f, if (active) ACTIVE_ACCENT else ink())
+            text(c, label, left + 26f, 765f, 12f, ink(), b.width() - 35f, active)
         }
     }
 
@@ -592,7 +610,7 @@ class NativeTvView(context: Context) : View(context) {
         return listOfNotNull(
             if (energyConfigured(d) || wellConfigured(d) || hotWaterConfigured(d) || d.obj("water").array("valves").length() > 0) "overview" to "Dům a energie" else null,
             "rooms" to "Místnosti",
-            if (washerConfigured(d) || vacuumConfigured(d)) "cleaning" to "Úklid" else null,
+            if (washerConfigured(d) || vacuumConfigured(d) || dishwasherConfigured(d)) "cleaning" to "Úklid" else null,
             "security" to if (securityConfigured()) "Zabezpečení a rodina" else "Rodina")
     }
     private fun visibleHouseholdSection(): String { val sections = householdSections(); return sections.find { it.first == householdSection }?.first ?: sections.first().first }
@@ -645,6 +663,17 @@ class NativeTvView(context: Context) : View(context) {
     private fun hotWaterConfigured(d: JSONObject) = d.obj("hotWater").let { h -> listOf("top", "bottom", "power").any { configured(h.obj(it)) } }
     private fun washerConfigured(d: JSONObject) = d.obj("washer").let { configured(it.obj("job")) || configured(it.obj("machine")) }
     private fun vacuumConfigured(d: JSONObject) = !live() || d.obj("vacuum").let { it.string("entityId").isNotEmpty() || it.obj("map").optBoolean("available") }
+    private fun dishwasherConfigured(d: JSONObject) = configured(d.obj("dishwasher"))
+    // The countdown is only the configured estimate from the timer start (see domestic-panel.mjs).
+    private fun dishwasherLabel(dish: JSONObject): String {
+        if (!dish.optBoolean("available")) return "Stav neznámý"
+        if (!dish.optBoolean("running")) return "Nečinná"
+        val end = runCatching { java.time.Instant.parse(dish.string("estimatedEnd")).toEpochMilli() }.getOrNull() ?: return "Běží"
+        val minutes = ((end - now) / 60000.0).let { kotlin.math.ceil(it).toLong() }
+        return if (minutes > 0) "Běží · zbývá $minutes min" else "Běží · dobíhá"
+    }
+    // Warm highlight for anything switched on or running (lights, heating, appliances).
+    private fun activeFill() = if (dark()) Color.argb(72, 232, 176, 82) else Color.argb(96, 240, 190, 100)
     private fun securityConfigured() = !live() || data().obj("household").array("security").length() > 0
     private fun nightAvailable() = data().obj("household").optJSONObject("night") != null
     private fun drawRooms(c: Canvas) {
@@ -672,7 +701,7 @@ class NativeTvView(context: Context) : View(context) {
     private fun drawCleaning(c: Canvas) {
         val d = data().obj("domestic"); val washer = d.obj("washer"); val vacuum = d.obj("vacuum"); val map = vacuum.obj("map")
         if (washerConfigured(d)) drawWasher(c, washer)
-        if (!vacuumConfigured(d)) return
+        if (!vacuumConfigured(d)) { if (dishwasherConfigured(d)) drawDishwasher(c, d.obj("dishwasher")); return }
         card(c, RectF(720f, 245f, 1406f, 733f)); badge(c, "robot", 745f, 258f, Color.rgb(130, 154, 149)); text(c, vacuum.string("name", "Robotický vysavač"), 795f, 285f, 22f, ink(), 410f, true)
         chip(c, reading(vacuum.number("batteryPercent"), " %", 0), 1267f, 262f, 110f, Color.rgb(130, 154, 149))
         text(c, (if (vacuum.optBoolean("available")) status(vacuum.string("state")) else "Robot není dostupný") + "   ·   Baterie " + reading(vacuum.number("batteryPercent"), " %", 0), 745f, 319f, 14f, muted(), 630f)
@@ -681,6 +710,18 @@ class NativeTvView(context: Context) : View(context) {
         focus(c, "vacuum:map", area, 15f); text(c, "Poslední aktualizace " + timeLabel(map.string("lastUpdated")), 745f, 647f, 12f, muted(), 630f)
         text(c, "Plocha " + metric(vacuum.obj("cleanedArea")) + "    Čas " + metric(vacuum.obj("cleaningTime"), 0), 745f, 680f, 15f, ink(), 630f)
         text(c, "Poslední mapa nepotvrzuje aktuální spojení s robotem.", 745f, 710f, 12f, muted(), 630f)
+    }
+    private fun drawDishwasher(c: Canvas, dish: JSONObject) {
+        val running = dish.optBoolean("running")
+        card(c, RectF(720f, 245f, 1406f, 733f)); if (running) fill(c, RectF(720f, 245f, 1406f, 733f), activeFill(), 24f)
+        badge(c, "dishwasher", 745f, 258f, if (running) ACTIVE_ACCENT else Color.rgb(115, 149, 184)); text(c, dish.string("name", "Myčka"), 795f, 285f, 23f, ink(), 350f, true)
+        chip(c, if (dish.optBoolean("available")) if (running) "Běží" else "Nečinná" else "Stav neznámý", 1207f, 263f, 175f, if (running) ACTIVE_ACCENT else Color.rgb(139, 155, 145))
+        icon(c, "dishwasher", 757f, 335f, 105f, if (running) ACTIVE_ACCENT else muted())
+        text(c, dishwasherLabel(dish), 906f, 370f, 28f, ink(), 470f)
+        val started = dish.string("startedAt").let { if (running && it.isNotEmpty()) "Spuštěna v " + timeLabel(it) else "Čeká na spuštění" }
+        text(c, started, 906f, 411f, 16f, muted(), 470f)
+        readingBlock(c, "Příkon zásuvky", metric(dish.obj("power"), 0), 745f, 530f, 300f)
+        text(c, "Odpočet je jen odhad ${dish.optInt("estimateMinutes", 30)} minut od spuštění.", 745f, 698f, 12f, muted(), 630f)
     }
     private fun drawWasher(c: Canvas, washer: JSONObject) {
         card(c, RectF(34f, 245f, 698f, 733f)); badge(c, "washer", 59f, 258f, Color.rgb(115, 149, 184)); text(c, "Pračka", 109f, 285f, 23f, ink(), 350f, true)
@@ -854,6 +895,7 @@ class NativeTvView(context: Context) : View(context) {
             "chevron" -> { path.moveTo(9f, 5f); path.lineTo(16f, 12f); path.lineTo(9f, 19f); c.drawPath(path, paint) }
             "play" -> { path.moveTo(7f, 3f); path.lineTo(21f, 12f); path.lineTo(7f, 21f); path.close(); c.drawPath(path, paint) }
             "washer" -> { c.drawRoundRect(2f, 2f, 22f, 23f, 3f, 3f, paint); c.drawLine(2f, 7f, 22f, 7f, paint); c.drawCircle(12f, 15f, 6f, paint) }
+            "dishwasher" -> { c.drawRoundRect(2f, 2f, 22f, 23f, 3f, 3f, paint); c.drawLine(2f, 7f, 22f, 7f, paint); c.drawLine(9f, 4.5f, 15f, 4.5f, paint); c.drawLine(6f, 12f, 18f, 12f, paint); c.drawLine(6f, 17f, 18f, 17f, paint) }
             "thermometer" -> { path.moveTo(9f, 14f); path.lineTo(9f, 5f); path.cubicTo(9f, 1f, 15f, 1f, 15f, 5f); path.lineTo(15f, 14f); path.cubicTo(22f, 20f, 13f, 26f, 8f, 21f); path.cubicTo(5f, 19f, 6f, 16f, 9f, 14f); c.drawPath(path, paint); c.drawLine(12f, 8f, 12f, 18f, paint); c.drawLine(18f, 5f, 21f, 5f, paint); c.drawLine(18f, 9f, 20f, 9f, paint) }
             "robot" -> { c.drawCircle(12f, 13f, 9f, paint); c.drawRoundRect(7f, 6f, 17f, 11f, 2f, 2f, paint); c.drawLine(8f, 18f, 16f, 18f, paint); c.drawCircle(16f, 14f, .8f, paint) }
             "map" -> { path.moveTo(2f, 5f); path.lineTo(8f, 2f); path.lineTo(16f, 5f); path.lineTo(22f, 2f); path.lineTo(22f, 19f); path.lineTo(16f, 22f); path.lineTo(8f, 19f); path.lineTo(2f, 22f); path.close(); c.drawPath(path, paint); c.drawLine(8f, 2f, 8f, 19f, paint); c.drawLine(16f, 5f, 16f, 22f, paint) }
@@ -952,6 +994,7 @@ class NativeTvView(context: Context) : View(context) {
         const val WIDTH = 1440f; const val HEIGHT = 810f; const val NETFLIX = "com.netflix.ninja"
         // Config "area" marking light-role switches that are heating presets (not shown as lights).
         const val HEATING_AREA = "Topení"
+        val ACTIVE_ACCENT = Color.rgb(232, 176, 82)
         private fun darken(color: Int): Int = Color.rgb((Color.red(color) * .65).toInt(), (Color.green(color) * .65).toInt(), (Color.blue(color) * .65).toInt())
         // Order matters: the first six installed apps form the home row.
         private val APPS = listOf(

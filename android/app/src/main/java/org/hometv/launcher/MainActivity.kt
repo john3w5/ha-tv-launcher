@@ -431,6 +431,18 @@ class MainActivity : Activity() {
             screen.householdPage() == "cleaning") loadVacuumMap(silent = true)
     }
 
+    /** One-press toggle from the home strip; the server re-validates the current state before acting. */
+    private fun toggleLight(entityId: String) {
+        val lights = dashboard.optJSONObject("home")?.optJSONArray("lights") ?: return
+        val light = (0 until lights.length()).mapNotNull { lights.optJSONObject(it) }.firstOrNull { it.optString("entityId") == entityId } ?: return
+        val state = light.optString("state")
+        if (state !in listOf("on", "off")) { toast("Stav světla není ověřený."); return }
+        commands.post("/api/control", JSONObject().put("type", "light").put("id", entityId).put("on", state != "on")) { result ->
+            result.onSuccess { if (it.optBoolean("accepted")) ui.postDelayed({ refreshData() }, 1200) else toast("Změna nebyla potvrzena.") }
+                .onFailure { toast("Světlo se nepodařilo přepnout.") }
+        }
+    }
+
     private fun refreshData() {
         if (loading || !resumed || !endpointReady) return
         loading = true
@@ -508,7 +520,7 @@ class MainActivity : Activity() {
 
     private fun handleAction(action: String) {
         lastInteraction = SystemClock.uptimeMillis()
-        if (bootstrap.optJSONObject("preview")?.optBoolean("readOnly") == true && action in listOf("night", "kino", "assistant")) {
+        if (bootstrap.optJSONObject("preview")?.optBoolean("readOnly") == true && (action in listOf("night", "kino", "assistant") || action.startsWith("light:"))) {
             toast("Živý náhled je pouze pro čtení."); return
         }
         when {
@@ -528,6 +540,7 @@ class MainActivity : Activity() {
             action == "night" -> dialogs.showNightPlan()
             action == "kino" -> dialogs.showKino()
             action == "heating" -> dialogs.showControls("heating")
+            action.startsWith("light:") -> toggleLight(action.removePrefix("light:"))
             action == "map:google" -> googleMap.openExpanded()
             action.startsWith("camera:") -> {
                 val id = action.removePrefix("camera:")
