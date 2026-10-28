@@ -256,6 +256,34 @@ class MainActivity : Activity() {
         else if (intent.hasCategory(Intent.CATEGORY_HOME)) goHome()
     }
 
+    // Button Mapper opens the launcher on Home, but on this Sony the system
+    // sometimes still opens Google TV a few milliseconds later and covers it.
+    // Hidden right after a start that we did not cause ourselves → come back.
+    private var startRequestAt = 0L
+    private var ownLaunchAt = 0L
+    private val autoReturns = ArrayDeque<Long>()
+
+    override fun startActivity(intent: Intent, options: Bundle?) {
+        ownLaunchAt = SystemClock.uptimeMillis()
+        super.startActivity(intent, options)
+    }
+
+    // Also covers "task brought to front", which delivers no new intent.
+    override fun onStart() {
+        super.onStart()
+        startRequestAt = SystemClock.uptimeMillis()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        val now = SystemClock.uptimeMillis()
+        if (isFinishing || now - startRequestAt > 2500L || now - ownLaunchAt < 2500L) return
+        while (autoReturns.isNotEmpty() && now - autoReturns.first() > 30_000L) autoReturns.removeFirst()
+        if (autoReturns.size >= 2) return
+        autoReturns.addLast(now)
+        ui.postDelayed({ TvAutostart.launch(this) }, 400)
+    }
+
     override fun onPause() {
         resumed = false; generation++
         settingsWrite++; settingsPending = false

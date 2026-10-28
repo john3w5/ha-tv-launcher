@@ -797,7 +797,7 @@ class NativeDialogController(
         val border = if (isDark()) Color.argb(38, 255, 255, 255) else Color.argb(95, 174, 185, 200)
         val idle = if (control.kind == "segment") Color.TRANSPARENT else if (isDark()) Color.argb(13, 255, 255, 255) else Color.argb(75, 255, 255, 255)
         view.background = StateListDrawable().apply {
-            addState(intArrayOf(android.R.attr.state_focused), settingsShape(if (isDark()) Color.rgb(84, 91, 106) else Color.WHITE, if (isDark()) Color.argb(210, 237, 244, 255) else Color.WHITE, radius))
+            addState(intArrayOf(android.R.attr.state_focused), focusShape(if (isDark()) Color.rgb(84, 91, 106) else Color.WHITE, radius))
             addState(intArrayOf(android.R.attr.state_pressed), settingsShape(if (isDark()) Color.rgb(77, 85, 101) else Color.rgb(218, 226, 237), border, radius))
             addState(intArrayOf(android.R.attr.state_selected), settingsShape(if (isDark()) Color.argb(39, 235, 243, 255) else Color.argb(223, 255, 255, 255), border, radius))
             addState(intArrayOf(), settingsShape(idle, if (control.kind == "segment") 0 else border, radius))
@@ -843,13 +843,15 @@ class NativeDialogController(
         }
     }
     private fun buttonShape(fill: Int) = GradientDrawable().apply { setColor(fill); cornerRadius = unitf(20f) }
+    /** Focused control: amber outline matching the launcher's selection ring. */
+    private fun focusShape(fill: Int, radius: Float = 20f) = GradientDrawable().apply { setColor(fill); cornerRadius = unitf(radius); setStroke(unit(3).coerceAtLeast(2), NativeTvView.ACTIVE_ACCENT) }
     /** Current on/off state: warm amber when switched on, plain steel when off; focus still wins. */
     private fun currentStateBackground(on: Boolean) = StateListDrawable().apply {
-        addState(intArrayOf(android.R.attr.state_focused), buttonShape(if (isDark()) Color.rgb(73, 78, 88) else Color.rgb(217, 223, 232)))
+        addState(intArrayOf(android.R.attr.state_focused), focusShape(if (isDark()) Color.rgb(73, 78, 88) else Color.rgb(217, 223, 232)))
         addState(intArrayOf(), buttonShape(if (on) Color.rgb(176, 128, 52) else if (isDark()) Color.rgb(70, 76, 90) else Color.rgb(205, 212, 224)))
     }
     private fun buttonBackground() = StateListDrawable().apply {
-        addState(intArrayOf(android.R.attr.state_focused), buttonShape(if (isDark()) Color.rgb(73, 78, 88) else Color.rgb(217, 223, 232)))
+        addState(intArrayOf(android.R.attr.state_focused), focusShape(if (isDark()) Color.rgb(73, 78, 88) else Color.rgb(217, 223, 232)))
         addState(intArrayOf(android.R.attr.state_pressed), buttonShape(if (isDark()) Color.rgb(85, 91, 102) else Color.rgb(203, 210, 220)))
         addState(intArrayOf(android.R.attr.state_selected), buttonShape(if (isDark()) Color.rgb(61, 66, 76) else Color.rgb(221, 227, 236)))
         addState(intArrayOf(), buttonShape(if (isDark()) Color.rgb(48, 52, 60) else Color.rgb(231, 234, 239)))

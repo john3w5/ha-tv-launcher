@@ -332,7 +332,7 @@ class NativeTvView(context: Context) : View(context) {
         Tab.values().forEachIndexed { index, item ->
             val r = RectF(351f + index * 106f, 27f, 453f + index * 106f, 66f)
             target("tab:${item.key}", item.title, r, "header")
-            if (selection == "tab:${item.key}") fill(c, r, if (item == tab) Color.argb(38, 100, 126, 157) else Color.argb(48, 163, 185, 214), 22f)
+            if (selection == "tab:${item.key}") { fill(c, r, if (item == tab) Color.argb(38, 100, 126, 157) else Color.argb(48, 163, 185, 214), 22f); focusRing(c, r, 22f) }
             centered(c, item.title, r.centerX(), 52f, 15f, if (item == tab) Color.rgb(35, 42, 55) else ink())
         }
         listOf("appearance" to "sun", "notices" to "bell", "assistant" to "spark", "photos" to "photo", "settings" to "profile").forEachIndexed { index, item ->
@@ -446,7 +446,7 @@ class NativeTvView(context: Context) : View(context) {
             val selected = selection == action; val art = RectF(x, top, x + 212f, top + 99f)
             if (selected) { art.inset(-(4f + 4f * focusProgress), -(4f + 4f * focusProgress)); val halo = RectF(art); halo.inset(-7f, -7f); fill(c, halo, if (dark()) Color.argb(64, 220, 231, 248) else Color.argb(155, 255, 255, 255), 27f) }
             drawBrandTile(c, app, art)
-            if (selected) fill(c, art, Color.argb(16, 255, 255, 255), 20f)
+            if (selected) { fill(c, art, Color.argb(16, 255, 255, 255), 20f); focusRing(c, art, 20f) }
         }
     }
     private fun iconEdgeColor(bitmap: Bitmap): Int {
@@ -852,7 +852,14 @@ class NativeTvView(context: Context) : View(context) {
 
     private fun target(action: String, label: String, r: RectF, row: String) { if (targets.none { it.action == action }) targets.add(Target(action, label.take(180), RectF(r), row)) }
     private fun card(c: Canvas, r: RectF, radius: Float = 24f) { fill(c, r, glass(), radius); paint.style = Paint.Style.STROKE; paint.strokeWidth = 1.35f; paint.color = Color.WHITE; val dark = dark(); val key = GradientKey(r.left, r.top, r.right, r.bottom, dark); paint.shader = cardGradients.getOrPut(key) { LinearGradient(r.left, r.top, r.right, r.bottom, Color.argb(if (dark) 52 else 218, 255, 255, 255), Color.argb(if (dark) 17 else 98, 255, 255, 255), Shader.TileMode.CLAMP) }; c.drawRoundRect(r, radius, radius, paint); paint.shader = null; paint.style = Paint.Style.FILL }
-    private fun focus(c: Canvas, action: String, r: RectF, radius: Float = 24f) { if (selection == action) fill(c, r, if (dark()) Color.argb((32 + 22 * focusProgress).toInt(), 213, 226, 249) else Color.argb((95 + 55 * focusProgress).toInt(), 255, 255, 255), radius) }
+    private fun focus(c: Canvas, action: String, r: RectF, radius: Float = 24f) { if (selection == action) { fill(c, r, if (dark()) Color.argb((32 + 22 * focusProgress).toInt(), 213, 226, 249) else Color.argb((95 + 55 * focusProgress).toInt(), 255, 255, 255), radius); focusRing(c, r, radius) } }
+    /** Amber outline of the remote's current selection, visible in light and dark themes. */
+    private fun focusRing(c: Canvas, r: RectF, radius: Float) {
+        paint.shader = null; paint.style = Paint.Style.STROKE; paint.strokeWidth = 3.5f
+        paint.color = Color.argb((160 + 95 * focusProgress).toInt(), Color.red(ACTIVE_ACCENT), Color.green(ACTIVE_ACCENT), Color.blue(ACTIVE_ACCENT))
+        val outline = RectF(r); outline.inset(-2.5f, -2.5f); c.drawRoundRect(outline, radius + 2.5f, radius + 2.5f, paint)
+        paint.style = Paint.Style.FILL
+    }
     private fun button(c: Canvas, action: String, label: String, r: RectF, row: String, active: Boolean = false) { target(action, label, r, row); fill(c, r, if (active) if (dark()) Color.argb(95, 220, 230, 244) else Color.argb(205, 255, 255, 255) else glass(), 24f); focus(c, action, r, 24f); centered(c, label, r.centerX(), r.centerY() + 5f, 14f, ink()) }
     private fun smallCard(c: Canvas, action: String, title: String, subtitle: String, r: RectF, row: String) { card(c, r); target(action, title, r, row); focus(c, action, r); badge(c, when (action) { "open:notices" -> "bell"; "night" -> "moon"; "open:calendar" -> "calendar"; else -> "play" }, r.right - 55f, r.top + 16f, Color.rgb(129, 150, 178)); text(c, title, r.left + 22f, r.top + 35f, 19f, ink(), r.width() - 90f, true); text(c, subtitle, r.left + 22f, r.top + 69f, 13f, muted(), r.width() - 44f) }
     private fun readingBlock(c: Canvas, label: String, value: String, x: Float, y: Float, width: Float) { text(c, label, x, y, 13f, muted(), width); text(c, value, x, y + 45f, 28f, ink(), width) }
