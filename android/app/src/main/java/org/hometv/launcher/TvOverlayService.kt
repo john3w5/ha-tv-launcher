@@ -80,6 +80,16 @@ class TvOverlayService : Service() {
             }.onFailure { Log.w("HomeTVOverlay", "service_start_unavailable") }
         }
 
+        /** After an app update nothing is visible yet; resume notices if the TV is already paired. */
+        fun startAfterUpdate(context: Context) {
+            if (running || !enabled(context) || !Settings.canDrawOverlays(context)) return
+            OverlayProtocol.sessionCookie(CookieManager.getInstance().getCookie(BuildConfig.DASHBOARD_URL)) ?: return
+            runCatching {
+                val intent = Intent(context, TvOverlayService::class.java)
+                if (Build.VERSION.SDK_INT >= 26) context.startForegroundService(intent) else context.startService(intent)
+            }.onFailure { Log.w("HomeTVOverlay", "service_start_unavailable") }
+        }
+
         fun activityVisible(context: Context) {
             dashboardVisible = true
             if (running) runCatching { context.startService(Intent(context, TvOverlayService::class.java).setAction(ACTION_HIDE)) }
@@ -178,8 +188,10 @@ class TvOverlayService : Service() {
         cookie = OverlayProtocol.sessionCookie(CookieManager.getInstance().getCookie(BuildConfig.DASHBOARD_URL))
         if (!running || cookie == null || !Settings.canDrawOverlays(this)) { stopSelf(); return START_NOT_STICKY }
         if (listening.compareAndSet(false, true)) eventWorker.execute { listen() }
-        // A force-stop/process kill is a backstop. Opening the launcher starts it again.
-        return START_NOT_STICKY
+        // Sticky: when Android kills the process (e.g. the system WebView updating
+        // overnight), it restarts this service, which keeps notices and the
+        // screen-on return to the launcher working without opening it first.
+        return START_STICKY
     }
 
     private fun connection(uri: URI, timeout: Int): HttpURLConnection = (uri.toURL().openConnection() as HttpURLConnection).apply {

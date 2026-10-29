@@ -26,6 +26,9 @@ object TvAutostart {
 
 class TvBootReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
-        if (intent.action == Intent.ACTION_BOOT_COMPLETED) TvAutostart.launch(context)
+        when (intent.action) {
+            Intent.ACTION_BOOT_COMPLETED -> TvAutostart.launch(context)
+            Intent.ACTION_MY_PACKAGE_REPLACED -> TvOverlayService.startAfterUpdate(context)
+        }
     }
 }
