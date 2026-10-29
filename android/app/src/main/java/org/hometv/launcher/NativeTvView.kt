@@ -1006,7 +1006,7 @@ class NativeTvView(context: Context) : View(context) {
         // Order matters: the first six installed apps form the home row.
         private val APPS = listOf(
             App("net.cme.voyo.cz.tvapp", "Oneplay", "oneplay", Color.rgb(88, 42, 115)), App(NETFLIX, "Netflix", "NETFLIX", Color.rgb(79, 14, 27)), App("to.prehraj.app", "Přehraj.to", "Přehraj.to", Color.rgb(30, 90, 160)),
-            App("com.liskovsoft.smarttubetv.beta", "SmartTube", "SmartTube", Color.rgb(180, 30, 40)), App(NativeLaunchPolicy.GOOGLE_TV_HOME, "Google TV", "Google TV", Color.rgb(52, 98, 160)), App("com.sony.dtv.smartmediaapp", "Přehrávač médií", "Média", Color.rgb(70, 110, 80)),
+            App("org.smarttube.stable", "SmartTube", "SmartTube", Color.rgb(180, 30, 40)), App(NativeLaunchPolicy.GOOGLE_TV_HOME, "Google TV", "Google TV", Color.rgb(52, 98, 160)), App("com.sony.dtv.smartmediaapp", "Přehrávač médií", "Média", Color.rgb(70, 110, 80)),
             App("com.google.android.youtube.tv", "YouTube", "YouTube", Color.rgb(153, 44, 48)), App("com.google.android.youtube.tvmusic", "YouTube Music", "Music", Color.rgb(141, 50, 61)), App("com.google.android.youtube.tvkids", "YouTube Kids", "Kids", Color.rgb(150, 58, 69)),
             App("cz.prima.tvapp", "prima+", "prima+", Color.rgb(42, 94, 85)), App("com.spotify.tv.android", "Spotify", "Spotify", Color.rgb(47, 99, 75)), App("org.videolan.vlc", "VLC", "VLC", Color.rgb(152, 100, 42)),
             App("com.tcl.ui_mediaCenter", "Centrum médií", "Média", Color.rgb(83, 80, 112)), App("com.tcl.browser", "Prohlížeč", "Web", Color.rgb(53, 99, 121)), App("com.tcl.gallery", "Galerie", "Fotky", Color.rgb(78, 109, 88)),
