@@ -1,6 +1,8 @@
 name: "HA TV Launcher"
-version: "0.1.5"
+version: "0.1.6"
 slug: "home_tv_launcher"
+# Hotový obraz z GitHub Actions (addon-image.yml); Supervisor ho jen stáhne.
+image: "ghcr.io/john3w5/{arch}-ha-tv-launcher"
 description: "Server pro TV launcher s přehledem dat z vašeho Home Assistanta."
 arch:
   - aarch64

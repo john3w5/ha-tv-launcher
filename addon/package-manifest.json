@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-10-29T08:46:38.994Z",
+  "generatedAt": "2026-10-29T17:58:40.976Z",
   "privateDataIncluded": false,
   "files": [
     {
@@ -11,7 +11,7 @@
     {
       "path": "runtime/package.json",
       "bytes": 500,
-      "sha256": "691fb88712cbe2f7dfefe897c2989c3924312c2d7b4dc10d7da025bd6c34a8d6"
+      "sha256": "b1da076b971291292fd357c9eb55e3731f92a23c04f0c17f74868f7b2718c7bd"
     },
     {
       "path": "runtime/config.example.json",
@@ -335,8 +335,8 @@
     },
     {
       "path": "config.yaml",
-      "bytes": 925,
-      "sha256": "d23a03d922345aacdcf7fb59261fa7905ad3d80d2958c2be479c72008d3a6eae"
+      "bytes": 1051,
+      "sha256": "4149fe083e3f1b4c25918dfebd89c4f0caf563a01727aa362b2e1b6c2ae38d8f"
     }
   ]
 }
