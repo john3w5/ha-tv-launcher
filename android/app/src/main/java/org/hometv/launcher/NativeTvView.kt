@@ -378,7 +378,7 @@ class NativeTvView(context: Context) : View(context) {
             entries.add(arrayOf("rooms", "thermometer", room.string("name", "Místnost"),
                 metric(room.obj("temperature")) + if (configured(room.obj("humidity"))) "   ·   " + metric(room.obj("humidity"), 0) else "", "0"))
         }
-        if (washerConfigured(d)) entries.add(arrayOf("cleaning", "washer", "Pračka", status(d.obj("washer").obj("machine").string("state")), if (d.obj("washer").optBoolean("running")) "1" else "0"))
+        if (washerConfigured(d)) entries.add(arrayOf("cleaning", "washer", "Pračka", if (washerIdle(d.obj("washer"))) "Nečinná" else status(d.obj("washer").obj("machine").string("state")), if (d.obj("washer").optBoolean("running")) "1" else "0"))
         if (dishwasherConfigured(d)) entries.add(arrayOf("cleaning", "dishwasher", d.obj("dishwasher").string("name", "Myčka"), dishwasherLabel(d.obj("dishwasher")), if (d.obj("dishwasher").optBoolean("running")) "1" else "0"))
         if (configured(d.obj("energy").obj("power"))) entries.add(arrayOf("overview", "energy", "Dům právě teď", power(d.obj("energy").number("powerW")), "0"))
         if (bedroom != null && configured(bedroom.obj("co2"))) entries.add(arrayOf("rooms", "wind", "Vzduch v ložnici", metric(bedroom.obj("co2"), 0), "0"))
@@ -741,8 +741,8 @@ class NativeTvView(context: Context) : View(context) {
     }
     private fun drawWasher(c: Canvas, washer: JSONObject) {
         card(c, RectF(34f, 245f, 698f, 733f)); badge(c, "washer", 59f, 258f, Color.rgb(115, 149, 184)); text(c, "Pračka", 109f, 285f, 23f, ink(), 350f, true)
-        chip(c, if (washer.optBoolean("available")) "Připojená" else "Stav neznámý", 497f, 263f, 175f, Color.rgb(139, 155, 145))
-        icon(c, "washer", 71f, 335f, 105f, muted()); text(c, if (washer.obj("job").optBoolean("available")) status(washer.obj("job").string("state")) else "Fáze není dostupná", 220f, 370f, 28f, ink(), 448f)
+        chip(c, if (washerIdle(washer)) "Bez programu" else if (washer.optBoolean("available")) "Připojená" else "Stav neznámý", 497f, 263f, 175f, Color.rgb(139, 155, 145))
+        icon(c, "washer", 71f, 335f, 105f, muted()); text(c, if (washerIdle(washer)) "Nečinná" else if (washer.obj("job").optBoolean("available")) status(washer.obj("job").string("state")) else "Fáze není dostupná", 220f, 370f, 28f, ink(), 448f)
         text(c, washerCountdown(washer), 220f, 411f, 16f, muted(), 448f)
         val percent = washer.number("progressPercent"); if (percent != null) { fill(c, RectF(59f, 472f, 672f, 482f), if (dark()) Color.argb(40, 255, 255, 255) else Color.argb(30, 25, 45, 65), 6f); fill(c, RectF(59f, 472f, 59f + 613f * (percent / 100).coerceIn(0.0, 1.0).toFloat(), 482f), Color.rgb(139, 170, 202), 6f) }
         readingBlock(c, "Celková energie", metric(washer.obj("energy"), 2), 59f, 530f, 185f); readingBlock(c, "Celková voda", metric(washer.obj("water"), 1), 268f, 530f, 185f); readingBlock(c, "Příkon", metric(washer.obj("power"), 0), 477f, 530f, 185f)
@@ -990,7 +990,8 @@ class NativeTvView(context: Context) : View(context) {
     private fun power(value: Double?): String = if (value == null) "—" else if (abs(value) >= 1000) reading(value / 1000, " kW", 2) else reading(value, " W", 0)
     private fun securityLabel(value: String): String = mapOf("armed" to "Zapnuto", "disarmed" to "Vypnuto", "arming" to "Odchodové zpoždění")[value] ?: "Stav neznámý"
     private fun status(value: String): String = mapOf("on" to "Zapnuto", "off" to "Vypnuto", "open" to "Otevřeno", "closed" to "Zavřeno", "opening" to "Otevírá se", "closing" to "Zavírá se", "heating" to "Topí", "cooling" to "Chladí", "idle" to "V klidu", "auto" to "Automaticky", "heat" to "Vytápění", "cool" to "Chlazení", "docked" to "V doku", "cleaning" to "Uklízí", "returning" to "Vrací se do doku", "paused" to "Pozastaveno", "pause" to "Pozastaveno", "error" to "Chyba", "charging" to "Nabíjí se", "run" to "Běží", "active" to "Běží", "stop" to "Zastaveno", "wash" to "Praní", "washing" to "Praní", "rinse" to "Máchání", "spin" to "Odstřeďování", "drying" to "Sušení", "finish" to "Dokončeno", "finished" to "Dokončeno", "none" to "Bez programu")[value] ?: "Stav neznámý"
-    private fun washerCountdown(washer: JSONObject): String { val machine = washer.obj("machine"); val job = washer.obj("job").string("state"); if (machine.optBoolean("available") && machine.string("state") in listOf("stop", "off", "idle")) return if (job == "finish") "Program hlásí dokončení" else "Pračka právě neběží"; if (!washer.optBoolean("completionAvailable")) return "Čas dokončení není dostupný"; val end = parse(washer.string("estimatedCompletion")) ?: return "Čas dokončení není dostupný"; if (end <= now) return if (job == "finish") "Program hlásí dokončení" else "Poslední odhad již uplynul"; val minutes = ((end - now + 59999) / 60000).toInt(); return "Odhadem zbývá " + if (minutes >= 60) "${minutes / 60} h ${minutes % 60} min" else "$minutes min" }
+    private fun washerIdle(washer: JSONObject) = washer.obj("machine").let { it.optBoolean("available") && it.string("state") in listOf("stop", "off", "idle") }
+    private fun washerCountdown(washer: JSONObject): String { val job = washer.obj("job").string("state"); if (washerIdle(washer)) return if (job == "finish") "Program hlásí dokončení" else "Pračka právě neběží"; if (!washer.optBoolean("completionAvailable")) return "Čas dokončení není dostupný"; val end = parse(washer.string("estimatedCompletion")) ?: return "Čas dokončení není dostupný"; if (end <= now) return if (job == "finish") "Program hlásí dokončení" else "Poslední odhad již uplynul"; val minutes = ((end - now + 59999) / 60000).toInt(); return "Odhadem zbývá " + if (minutes >= 60) "${minutes / 60} h ${minutes % 60} min" else "$minutes min" }
 
     private fun drawMap(c: Canvas, household: JSONObject, r: RectF) {
         target("map:google", "Otevřít Google Mapy", r, "map")
