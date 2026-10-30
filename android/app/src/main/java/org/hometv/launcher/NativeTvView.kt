@@ -58,7 +58,7 @@ class NativeTvView(context: Context) : View(context) {
             val previous = field
             field = value
             if (previous != value) { tabPillFrom = previous.ordinal.toFloat(); animatePage(movePill = true) }
-            if (value == Tab.HOME) { focusNetflix() }
+            if (value == Tab.HOME) { focusFirstApp() }
             else if (value == Tab.APPS) { selectFirstApp() }
             else selection = "tab:${value.key}"
             updateDescription(); invalidate()
@@ -135,7 +135,7 @@ class NativeTvView(context: Context) : View(context) {
         bindRoomProjection(dashboard)
         val nextInstalled = APPS.filter { apps.contains(it.id) }
         if (installed != nextInstalled) installed = nextInstalled
-        if (pendingHomeFocus && tab == Tab.HOME) focusNetflix()
+        if (pendingHomeFocus && tab == Tab.HOME) focusFirstApp()
         else if (selection.startsWith("app:") && installed.none { "app:${it.id}" == selection }) selectFirstApp()
         updateDescription(); invalidate()
     }
@@ -156,10 +156,10 @@ class NativeTvView(context: Context) : View(context) {
     fun setProfileBitmap(bitmap: Bitmap?) { profile = bitmap; invalidate() }
     fun setPhotoBitmap(bitmap: Bitmap?) { photo = bitmap; photoRevision++; invalidate() }
     fun setVacuumBitmap(bitmap: Bitmap?) { vacuumMap = bitmap; vacuumRevision++; invalidate() }
-    fun setScreenSaver(enabled: Boolean) { saver = enabled; if (!enabled && tab == Tab.HOME) focusNetflix(); updateDescription(); invalidate() }
+    fun setScreenSaver(enabled: Boolean) { saver = enabled; if (!enabled && tab == Tab.HOME) focusFirstApp(); updateDescription(); invalidate() }
     fun setNotice(title: String, message: String) { noticeTitle = title.take(180); noticeMessage = message.take(500); noticeUntil = now + 8000; invalidate() }
     fun tick(nowMillis: Long = System.currentTimeMillis()) { if (nowMillis / 1000 != now / 1000) { now = nowMillis; invalidate() } }
-    fun focusNetflix() { pendingHomeFocus = true; val app = installed.find { it.id == NETFLIX } ?: installed.firstOrNull(); selection = app?.let { "app:${it.id}" } ?: "tab:home"; if (app != null) pendingHomeFocus = false; updateDescription(); invalidate() }
+    fun focusFirstApp() { pendingHomeFocus = true; val app = installed.firstOrNull(); selection = app?.let { "app:${it.id}" } ?: "tab:home"; if (app != null) pendingHomeFocus = false; updateDescription(); invalidate() }
     fun actionRects(): Map<String, RectF> = targets.associate { it.action to RectF(it.bounds) }
     fun actions(): List<Target> = targets.map { it.copy(bounds = RectF(it.bounds)) }
     /** The chores tile takes the camera's place on the home screen. */
@@ -814,7 +814,7 @@ class NativeTvView(context: Context) : View(context) {
         pendingHomeFocus = false
         val current = targets.find { it.action == selection }
         if (current == null) {
-            if (tab == Tab.HOME) focusNetflix()
+            if (tab == Tab.HOME) focusFirstApp()
             else (targets.find { it.action == "tab:${tab.key}" } ?: targets.firstOrNull())?.let(::select)
             return
         }
@@ -827,7 +827,7 @@ class NativeTvView(context: Context) : View(context) {
             }
             select(next); return
         }
-        if (key == KeyEvent.KEYCODE_DPAD_DOWN && current.row == "header") { val target = targets.find { it.action == "app:$NETFLIX" } ?: targets.firstOrNull { it.row.startsWith("apps") }; if (target != null) { select(target); return } }
+        if (key == KeyEvent.KEYCODE_DPAD_DOWN && current.row == "header") { val target = targets.firstOrNull { it.row.startsWith("apps") }; if (target != null) { select(target); return } }
         if (key == KeyEvent.KEYCODE_DPAD_DOWN && current.row == "header" && tab == Tab.HOUSEHOLD) {
             targets.find { it.action == "household:${visibleHouseholdSection()}" }?.let { select(it); return }
         }

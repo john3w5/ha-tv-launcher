@@ -166,10 +166,10 @@ class MainActivity : Activity() {
                 callback(result.map { it.getString("url") })
             }
         }, cancelStreamRequest = { cameraRequests.cancelPending() }, isDark = { darkAppearance() },
-            onClosed = { bind(); screen.tick(); if (screen.tab == NativeTvView.Tab.HOME) screen.focusNetflix(); scheduleAuxiliarySync() },
+            onClosed = { bind(); screen.tick(); if (screen.tab == NativeTvView.Tab.HOME) screen.focusFirstApp(); scheduleAuxiliarySync() },
             cameraPoster = { id -> cameraPosters[id]?.takeUnless { it.isRecycled } })
         cameras = NativeWebRtcController(this, BuildConfig.DASHBOARD_URL, isDark = { darkAppearance() },
-            onClosed = { bind(); screen.tick(); if (screen.tab == NativeTvView.Tab.HOME) screen.focusNetflix(); scheduleAuxiliarySync() },
+            onClosed = { bind(); screen.tick(); if (screen.tab == NativeTvView.Tab.HOME) screen.focusFirstApp(); scheduleAuxiliarySync() },
             cameraPoster = { id -> cameraPosters[id]?.takeUnless { it.isRecycled } })
         notices = NativeNoticeCard(this, isDark = { darkAppearance() }, onOpenDoor = { dialogs.showDoor() }) { id -> openCamera(id) }
         dialogs = NativeDialogController(this,
@@ -205,7 +205,7 @@ class MainActivity : Activity() {
             (0 until saved.length()).map { saved.getString(it) }.filter { NativeLaunchPolicy.isAllowedPackage(it) }
         }.getOrDefault(emptyList())
         bind()
-        screen.focusNetflix()
+        screen.focusFirstApp()
         loadInstalledApps()
         pendingCamera = cameraIntent(intent)
         pendingDoor = intent.getStringExtra("open_door") == "entrance"
@@ -319,7 +319,7 @@ class MainActivity : Activity() {
         super.onWindowFocusChanged(hasFocus)
         if (hasFocus && resumed && ::screen.isInitialized && ::dialogs.isInitialized &&
             !dialogs.isOpen() && !media.isOpen() && !cameras.isOpen() && !googleMap.isOpen() && assistantDialog == null && formDialog == null && !saver && screen.tab == NativeTvView.Tab.HOME) {
-            screen.focusNetflix()
+            screen.focusFirstApp()
         }
         scheduleAuxiliarySync()
     }
@@ -380,7 +380,7 @@ class MainActivity : Activity() {
                 val tabs = NativeTvView.Tab.entries
                 val offset = if (event.keyCode == KeyEvent.KEYCODE_CHANNEL_UP) 1 else -1
                 screen.tab = tabs[(screen.tab.ordinal + offset + tabs.size) % tabs.size]
-                if (screen.tab == NativeTvView.Tab.HOME) screen.focusNetflix()
+                if (screen.tab == NativeTvView.Tab.HOME) screen.focusFirstApp()
                 screen.invalidate()
                 scheduleAuxiliarySync()
             }
@@ -405,7 +405,7 @@ class MainActivity : Activity() {
         formDialog?.dismiss(); formDialog = null
         saver = false; screen.setScreenSaver(false)
         screen.tab = NativeTvView.Tab.HOME
-        screen.focusNetflix(); screen.requestFocus(); lastInteraction = SystemClock.uptimeMillis()
+        screen.focusFirstApp(); screen.requestFocus(); lastInteraction = SystemClock.uptimeMillis()
         scheduleAuxiliarySync()
         if (BuildConfig.DEBUG) Log.d("HomeTVNative", "home selected=${screen.selectedAction}")
     }
