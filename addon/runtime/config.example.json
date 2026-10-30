@@ -15,6 +15,7 @@
         "name": "Kalendář"
       }
     ],
+    "chores": null,
     "cameras": [
       {
         "id": "example_camera",

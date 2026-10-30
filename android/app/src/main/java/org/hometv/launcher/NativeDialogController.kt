@@ -191,6 +191,12 @@ class NativeDialogController(
         }
     }
 
+    fun showChores(days: List<Pair<String, List<String>>>, available: Boolean): Unit = ui {
+        val p = open("Povinnosti") ?: return@ui
+        if (!available) text(p, "Kalendář povinností teď není dostupný.")
+        else days.forEach { (day, chores) -> section(p, day); text(p, if (chores.isEmpty()) "Nic" else chores.joinToString(" · ")) }
+    }
+
     fun showKino(): Unit = ui {
         val p = open("Kino a oznámení", height = 460) ?: return@ui
         text(p, "Ztiší běžné bannery na zvolenou dobu. Důležité domácí události a zvonek zůstávají povolené.")

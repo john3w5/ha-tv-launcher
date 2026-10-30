@@ -103,6 +103,7 @@ class NativeTvView(context: Context) : View(context) {
     private val formatters = HashMap<String, SimpleDateFormat>()
     private val numberFormat = NumberFormat.getNumberInstance(locale)
     private val calendarProjection = NativeCalendarProjection()
+    private val choresProjection = NativeCalendarProjection()
     private var roomProjection = emptyList<RoomDisplay>()
     private var calendarRevision = 0L
     private var roomRevision = 0L
@@ -161,6 +162,10 @@ class NativeTvView(context: Context) : View(context) {
     fun focusNetflix() { pendingHomeFocus = true; val app = installed.find { it.id == NETFLIX } ?: installed.firstOrNull(); selection = app?.let { "app:${it.id}" } ?: "tab:home"; if (app != null) pendingHomeFocus = false; updateDescription(); invalidate() }
     fun actionRects(): Map<String, RectF> = targets.associate { it.action to RectF(it.bounds) }
     fun actions(): List<Target> = targets.map { it.copy(bounds = RectF(it.bounds)) }
+    /** The chores tile takes the camera's place on the home screen. */
+    fun choresConfigured() = data().obj("chores").string("entityId").isNotEmpty()
+    fun choresAvailable() = choresProjection.available(live())
+    fun choresWeek(): List<Pair<String, List<String>>> = choresProjection.days(now).map { day -> day.longLabel to choresProjection.occurrences(now, day.key, live()).map { it.event.title } }
     fun cameraRects(): Map<String, RectF> = cameraAreas.mapValues { RectF(it.value) }
     fun householdPage(): String = householdSection
     // Chromium initialization must not compete with a page's transition frames.
@@ -360,8 +365,8 @@ class NativeTvView(context: Context) : View(context) {
     private fun drawHome(c: Canvas) {
         weatherCard(c, RectF(34f, 162f, 498f, 386f))
         calendarCard(c, RectF(514f, 162f, 956f, 386f))
-        val first = data().array("cameras").objects(4).firstOrNull()
-        cameraCard(c, first, RectF(972f, 162f, 1406f, 386f), "overview")
+        val slot = RectF(972f, 162f, 1406f, 386f)
+        if (choresConfigured()) choresCard(c, slot) else cameraCard(c, data().array("cameras").objects(4).firstOrNull(), slot, "overview")
         val d = data().obj("domestic"); val rooms = (if (d.optInt("roomsContractVersion") >= 2) d.array("rooms") else d.obj("air").array("rooms")).objects()
         val bedroom = rooms.find { it.string("id") == "bedroom" }
         // Only sources configured in this installation get a quick tile; free
@@ -427,6 +432,17 @@ class NativeTvView(context: Context) : View(context) {
         val events = events(); text(c, if (calendarAvailable()) "${events.size} událostí v přehledu" else "Kalendář není dostupný", r.left + 91f, r.top + 105f, 11f, muted(), 300f)
         events.take(2).forEachIndexed { index, event -> eventLine(c, event, r.left + 24f, r.top + 147f + index * 43f, r.width() - 48f, false) }
         if (events.isEmpty()) text(c, if (calendarAvailable()) "Žádné nadcházející události." else "Čekám na rodinný kalendář.", r.left + 24f, r.top + 160f, 12f, muted(), r.width() - 48f)
+    }
+    private fun choresCard(c: Canvas, r: RectF) {
+        card(c, r); icon(c, "calendar", r.left + 20f, r.top + 20f, 18f, muted()); text(c, "Povinnosti · " + format(now, "EEEE"), r.left + 48f, r.top + 35f, 14f, ink(), r.width() - 70f, true)
+        target("chores", "Povinnosti", r, "overview"); focus(c, "chores", r)
+        val today = choresWeek().first().second; val rows = if (today.size > 4) 3 else today.size
+        today.take(rows).forEachIndexed { index, chore ->
+            val y = r.top + 82f + index * 34f
+            fill(c, RectF(r.left + 24f, y - 10f, r.left + 32f, y - 2f), ACTIVE_ACCENT, 4f); text(c, chore, r.left + 44f, y, 16f, ink(), r.width() - 68f)
+        }
+        if (today.size > rows) text(c, "a další ${today.size - rows}", r.left + 44f, r.top + 184f, 13f, muted(), r.width() - 68f)
+        if (today.isEmpty()) text(c, if (choresAvailable()) "Dnes nikdo nic nemá." else "Kalendář povinností není dostupný.", r.left + 24f, r.top + 92f, 14f, muted(), r.width() - 48f)
     }
     private fun cameraCard(c: Canvas, camera: JSONObject?, r: RectF, row: String) {
         card(c, r); val id = camera?.string("id") ?: ""; val available = live() && camera?.optBoolean("available") == true
@@ -925,6 +941,12 @@ class NativeTvView(context: Context) : View(context) {
             }
         }
         if (calendarProjection.bind(input, available)) calendarRevision++
+        val chores = value.obj("chores"); val choreEvents = chores.array("events"); val choreInput = ArrayList<NativeCalendarProjection.Source>()
+        for (index in 0 until minOf(choreEvents.length(), 256)) {
+            val event = choreEvents.optJSONObject(index) ?: continue
+            choreInput.add(NativeCalendarProjection.Source(event.string("summary", "Povinnost"), chores.string("name", "Povinnosti"), eventDate(event.opt("start")), eventDate(event.opt("end"))))
+        }
+        choresProjection.bind(choreInput, chores.optBoolean("available"))
     }
     private fun bindRoomProjection(value: JSONObject) {
         val domestic = value.obj("domestic")

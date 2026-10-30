@@ -105,7 +105,7 @@ class MainActivity : Activity() {
     private val snapshots = object : Runnable {
         override fun run() {
             if (!resumed) return
-            if (!imageBusy && !saver && !media.isOpen() && !cameras.isOpen() && screen.tab in listOf(NativeTvView.Tab.HOME, NativeTvView.Tab.CAMERAS)) {
+            if (!imageBusy && !saver && !media.isOpen() && !cameras.isOpen() && screen.tab in listOf(NativeTvView.Tab.HOME, NativeTvView.Tab.CAMERAS) && !(screen.tab == NativeTvView.Tab.HOME && screen.choresConfigured())) {
                 val cameras = dashboard.optJSONArray("cameras") ?: JSONArray()
                 val available = (0 until cameras.length()).mapNotNull { cameras.optJSONObject(it) }
                     .filter { it.optBoolean("available") }
@@ -563,6 +563,7 @@ class MainActivity : Activity() {
             action == "appearance" -> dialogs.showSettings()
             action == "settings" -> dialogs.showSettings()
             action == "notices" -> dialogs.showNotices()
+            action == "chores" -> dialogs.showChores(screen.choresWeek(), screen.choresAvailable())
             action == "assistant" -> input.showChoice()
             action == "photos" -> startSaver()
             action == "night" -> dialogs.showNightPlan()

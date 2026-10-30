@@ -1,22 +1,22 @@
 {
   "version": 1,
-  "generatedAt": "2026-10-29T17:58:40.976Z",
+  "generatedAt": "2026-10-30T19:57:54.662Z",
   "privateDataIncluded": false,
   "files": [
     {
       "path": "runtime/server.mjs",
-      "bytes": 65299,
-      "sha256": "779d141b99087e5e48dc7cda163d5e5c004386b424343833ba8fc76873956228"
+      "bytes": 65519,
+      "sha256": "beeb5794930f94253215756393629cdf948f42274b7a3e9506eeae5d6b9595e7"
     },
     {
       "path": "runtime/package.json",
       "bytes": 500,
-      "sha256": "b1da076b971291292fd357c9eb55e3731f92a23c04f0c17f74868f7b2718c7bd"
+      "sha256": "27dc4feda297bb51aa23c8e73c460efe76c99631596e5e24059a7492fd14270f"
     },
     {
       "path": "runtime/config.example.json",
-      "bytes": 1534,
-      "sha256": "1fec5cae305b16d3d271d33e7322020f26e3883e19d4e9cfb181cc6052ebe1b1"
+      "bytes": 1554,
+      "sha256": "791e4a83b742dded7a22657eecdc9337e0eed4d7bdc9720fea4bdaedd6ee8407"
     },
     {
       "path": "runtime/assistant-plan.schema.json",
@@ -230,8 +230,8 @@
     },
     {
       "path": "runtime/lib/home-assistant.mjs",
-      "bytes": 17853,
-      "sha256": "03d0a7aa8bd9b2473d69bd2b975cc63b109cc0594efb7fa370253f1427a3cb7d"
+      "bytes": 18161,
+      "sha256": "10b3629a0d13f69d2ce896501a3fe2cffe6ab2f21758b67d175c7dd15eb4efe7"
     },
     {
       "path": "runtime/lib/home-controls.mjs",
@@ -336,7 +336,7 @@
     {
       "path": "config.yaml",
       "bytes": 1051,
-      "sha256": "4149fe083e3f1b4c25918dfebd89c4f0caf563a01727aa362b2e1b6c2ae38d8f"
+      "sha256": "8bf7f06d25363461d5207b2b224311fb500712bed1fd893dc5d2607fa7fa1435"
     }
   ]
 }

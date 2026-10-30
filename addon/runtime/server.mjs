@@ -66,6 +66,7 @@ function normalizeConfig(input = {}) {
     }));
   }
   config.entities.weather = Object.fromEntries(Object.entries(config.entities.weather || {}).filter(([, id]) => ENTITY.test(id)));
+  config.entities.chores = /^calendar\.[a-z0-9_]+$/.test(config.entities.chores?.entityId || '') ? { entityId: config.entities.chores.entityId, name: cleanText(config.entities.chores.name || 'Povinnosti', 100) } : null;
   config.entities.alarm = /^alarm_control_panel\.[a-z0-9_]+$/.test(config.entities.alarm?.entityId || '') ? { entityId: config.entities.alarm.entityId, name: cleanText(config.entities.alarm.name || 'Zabezpečení') } : null;
   for (const key of ['safeScenes', 'allowedMediaHosts', 'allowedStreamHosts', 'allowedOrigins']) config[key] = Array.isArray(config[key]) ? config[key].filter(item => typeof item === 'string') : [];
   config.safeScenes = config.safeScenes.filter(id => /^scene\.[a-z0-9_]+$/.test(id));

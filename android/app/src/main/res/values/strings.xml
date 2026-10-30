@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">HA TV Launcher</string>
+    <string name="home_key_service_description">Po stisku tlačítka Home otevře HA TV Launcher.</string>
 </resources>
