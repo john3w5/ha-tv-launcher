@@ -77,6 +77,7 @@ class NativeTvView(context: Context) : View(context) {
     private var now = System.currentTimeMillis()
     private var calendarPage = 0
     private var calendarDay: String? = null
+    private var schoolDay: String? = null
     private var householdSection = "overview"
     private var roomPage = 0
     private var profile: Bitmap? = null
@@ -208,7 +209,7 @@ class NativeTvView(context: Context) : View(context) {
                 val localDay = if (tab == Tab.CALENDAR) calendarProjection.days(now).first().key else ""
                 val revision = when { tab == Tab.CALENDAR -> calendarRevision; householdSection == "rooms" -> roomRevision; else -> bindRevision }
                 val key = ContentKey(tab, householdSection, calendarPage, calendarDay, roomPage, selection, revision, localDay,
-                    if (tab == Tab.HOUSEHOLD && householdSection == "cleaning") now / 1000 else 0L,
+                    if (tab != Tab.HOUSEHOLD) 0L else when (householdSection) { "cleaning" -> now / 1000; "school" -> now / 60000; else -> 0L },
                     if (tab == Tab.HOUSEHOLD && householdSection == "cleaning") vacuumRevision else 0L, live(), dark())
                 val headerCount = targets.size
                 val recordedTargets = displayLists.content(canvas, key, pageProgress, geometry) { recorded ->
@@ -627,13 +628,67 @@ class NativeTvView(context: Context) : View(context) {
             if (energyConfigured(d) || wellConfigured(d) || hotWaterConfigured(d) || d.obj("water").array("valves").length() > 0) "overview" to "Dům a energie" else null,
             "rooms" to "Místnosti",
             if (washerConfigured(d) || vacuumConfigured(d) || dishwasherConfigured(d)) "cleaning" to "Úklid" else null,
+            if (data().array("school").length() > 0) "school" to "Škola" else null,
             "security" to if (securityConfigured()) "Zabezpečení a rodina" else "Rodina")
     }
     private fun visibleHouseholdSection(): String { val sections = householdSections(); return sections.find { it.first == householdSection }?.first ?: sections.first().first }
     private fun drawHousehold(c: Canvas) {
         val section = visibleHouseholdSection()
-        householdSections().forEachIndexed { index, item -> button(c, "household:${item.first}", item.second, RectF(34f + index * 347f, 172f, 365f + index * 347f, 220f), "household-tabs", section == item.first) }
-        when (section) { "rooms" -> drawRooms(c); "cleaning" -> drawCleaning(c); "security" -> drawSecurity(c); else -> drawEnergy(c) }
+        val sections = householdSections(); val width = (1372f - 16f * (sections.size - 1)) / sections.size
+        sections.forEachIndexed { index, item -> val x = 34f + index * (width + 16f); button(c, "household:${item.first}", item.second, RectF(x, 172f, x + width, 220f), "household-tabs", section == item.first) }
+        when (section) { "rooms" -> drawRooms(c); "cleaning" -> drawCleaning(c); "school" -> drawSchool(c); "security" -> drawSecurity(c); else -> drawEnergy(c) }
+    }
+    private fun schoolDays(): List<String> {
+        val today = format(now, "yyyy-MM-dd")
+        return data().array("school").objects(4).flatMap { child -> child.array("days").objects(32).map { it.string("date") } }.filter { it >= today }.distinct().sorted().take(5)
+    }
+    /** Today until the last lesson ends, then the next day the timetable knows. */
+    private fun autoSchoolDay(days: List<String>): String? {
+        val today = format(now, "yyyy-MM-dd")
+        if (days.firstOrNull() != today) return days.firstOrNull()
+        val ends = data().array("school").objects(4).mapNotNull { child -> child.array("days").objects(32).find { it.string("date") == today }?.string("endsAt")?.let { calendarProjection.parse(it) } }.maxOrNull()
+        return if (ends != null && now < ends) today else days.getOrNull(1) ?: today
+    }
+    private fun schoolDayLabel(key: String, long: Boolean): String {
+        val time = calendarProjection.parse(key) ?: return key
+        val offset = ((time - (calendarProjection.parse(format(now, "yyyy-MM-dd")) ?: time)) / 86_400_000L).toInt()
+        val name = when (offset) { 0 -> "Dnes"; 1 -> "Zítra"; else -> null }
+        return if (long) listOfNotNull(name, format(time, "EEEE d. M.")).joinToString(" · ") else name ?: format(time, "EEE d. M.")
+    }
+    private fun schoolAccent() = if (dark()) ACTIVE_ACCENT else Color.rgb(166, 102, 18)
+    private fun drawSchool(c: Canvas) {
+        val days = schoolDays(); if (schoolDay !in days) schoolDay = null
+        val day = schoolDay ?: autoSchoolDay(days)
+        if (days.isNotEmpty()) {
+            val width = (1372f - 16f * (days.size - 1)) / days.size
+            days.forEachIndexed { index, key -> val x = 34f + index * (width + 16f); button(c, "school:day:$key", schoolDayLabel(key, false), RectF(x, 236f, x + width, 284f), "school-days", key == day) }
+        }
+        data().array("school").objects(2).forEachIndexed { index, child -> schoolCard(c, child, day, if (index == 0) RectF(34f, 300f, 698f, 733f) else RectF(720f, 300f, 1406f, 733f)) }
+    }
+    private fun schoolCard(c: Canvas, child: JSONObject, day: String?, r: RectF) {
+        card(c, r); text(c, child.string("name", "Rozvrh"), r.left + 25f, r.top + 40f, 21f, ink(), r.width() - 50f, true)
+        if (day != null) text(c, schoolDayLabel(day, true), r.left + 25f, r.top + 66f, 13f, muted(), r.width() - 50f)
+        val entry = child.array("days").objects(32).find { it.string("date") == day }
+        val lessons = entry?.array("lessons")?.objects(12).orEmpty()
+        when {
+            !child.optBoolean("available") -> text(c, "Rozvrh teď není dostupný.", r.left + 25f, r.top + 120f, 16f, muted(), r.width() - 50f)
+            entry == null -> text(c, "Na tento den rozvrh není.", r.left + 25f, r.top + 120f, 16f, muted(), r.width() - 50f)
+            entry.string("off").isNotEmpty() -> text(c, entry.string("off").replaceFirstChar { it.uppercase() }, r.left + 25f, r.top + 124f, 24f, ink(), r.width() - 50f)
+            lessons.isEmpty() -> text(c, "Žádné hodiny.", r.left + 25f, r.top + 120f, 16f, muted(), r.width() - 50f)
+            else -> {
+                val step = minOf(40f, (r.height() - 110f) / lessons.size)
+                lessons.forEachIndexed { index, lesson ->
+                    val y = r.top + 112f + index * step; val change = lesson.obj("change").string("description")
+                    val hour = lesson.string("hour") + "." + lesson.string("lastHour").let { if (it.isEmpty()) "" else "–$it." }
+                    text(c, hour, r.left + 25f, y, 13f, muted(), 55f); text(c, lesson.string("begin"), r.left + 85f, y, 13f, muted(), 60f)
+                    if (lesson.string("subject").isEmpty()) { text(c, change, r.left + 150f, y, 15f, schoolAccent(), r.width() - 175f); return@forEachIndexed }
+                    val subjectWidth = if (change.isEmpty()) r.width() - 260f else 190f
+                    text(c, lesson.string("subjectName", lesson.string("subject")), r.left + 150f, y, 16f, ink(), subjectWidth)
+                    if (change.isNotEmpty()) text(c, change, r.left + 350f, y, 13f, schoolAccent(), r.width() - 445f)
+                    text(c, lesson.string("room"), r.right - 85f, y, 13f, if (lesson.obj("change").string("type") == "RoomChanged") schoolAccent() else muted(), 65f)
+                }
+            }
+        }
     }
     private fun drawEnergy(c: Canvas) {
         val d = data().obj("domestic"); val energy = d.obj("energy"); val water = d.obj("water"); val hot = d.obj("hotWater")
@@ -859,8 +914,9 @@ class NativeTvView(context: Context) : View(context) {
             action == "open:notices" -> onAction("notices")
             action.startsWith("quick:") -> { householdSection = action.split(':').getOrNull(1) ?: "overview"; tab = Tab.HOUSEHOLD; selection = "household:$householdSection"; onAction("tab:household") }
             action.startsWith("tab:") -> { Tab.values().find { it.key == action.substringAfter(':') }?.let { selectHeaderTab(it) } }
-            action.startsWith("household:") -> { householdSection = action.substringAfter(':'); tab = Tab.HOUSEHOLD; selection = action; animatePage(); invalidate(); onAction("tab:household") }
+            action.startsWith("household:") -> { householdSection = action.substringAfter(':'); schoolDay = null; tab = Tab.HOUSEHOLD; selection = action; animatePage(); invalidate(); onAction("tab:household") }
             action.startsWith("page:") -> { val bits = action.split(':'); val delta = if (bits.last() == "next") 1 else -1; when (bits.getOrNull(1)) { "calendar" -> { calendarPage = max(0, calendarPage + delta); selection = "calendar:day:${calendarDay ?: "all"}" }; "rooms" -> { roomPage = max(0, roomPage + delta); selection = "household:rooms" } }; invalidate(); onAction("view:changed") }
+            action.startsWith("school:day:") -> { schoolDay = action.substringAfterLast(':'); selection = action; invalidate() }
             action.startsWith("calendar:day:") -> { calendarDay = action.substringAfterLast(':').takeUnless { it == "all" }; calendarPage = 0; selection = action; invalidate() }
             action == "saver:stop" -> { setScreenSaver(false); tab = Tab.HOME; onAction(action) }
             else -> onAction(action)

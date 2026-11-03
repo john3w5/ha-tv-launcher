@@ -1,22 +1,22 @@
 {
   "version": 1,
-  "generatedAt": "2026-10-30T19:57:54.662Z",
+  "generatedAt": "2026-11-03T13:25:23.593Z",
   "privateDataIncluded": false,
   "files": [
     {
       "path": "runtime/server.mjs",
-      "bytes": 65519,
-      "sha256": "beeb5794930f94253215756393629cdf948f42274b7a3e9506eeae5d6b9595e7"
+      "bytes": 65541,
+      "sha256": "b057d4cea914f08cbd17e2b57944dc60dba75556e4a769f5e90b581a69894142"
     },
     {
       "path": "runtime/package.json",
       "bytes": 500,
-      "sha256": "27dc4feda297bb51aa23c8e73c460efe76c99631596e5e24059a7492fd14270f"
+      "sha256": "8600aacc1d478a3e6a88005a2a33fdb674eb70147d0c0fbbcaf7ae2ee635a2b7"
     },
     {
       "path": "runtime/config.example.json",
-      "bytes": 1554,
-      "sha256": "791e4a83b742dded7a22657eecdc9337e0eed4d7bdc9720fea4bdaedd6ee8407"
+      "bytes": 1572,
+      "sha256": "301be87434b6f41af9e01aad61d8246b3f1650dbb6ca6033d81aa723385bf426"
     },
     {
       "path": "runtime/assistant-plan.schema.json",
@@ -230,8 +230,8 @@
     },
     {
       "path": "runtime/lib/home-assistant.mjs",
-      "bytes": 18161,
-      "sha256": "10b3629a0d13f69d2ce896501a3fe2cffe6ab2f21758b67d175c7dd15eb4efe7"
+      "bytes": 18257,
+      "sha256": "59c26da7a0e2730359723cabc834e2d7eef6cfa845dff1ca7d0994a90261891b"
     },
     {
       "path": "runtime/lib/home-controls.mjs",
@@ -294,6 +294,11 @@
       "sha256": "107ff77071a7f66fee7acffdfc85cfbcd5234034126f6a2d89df2853b63ac6a7"
     },
     {
+      "path": "runtime/lib/school-timetable.mjs",
+      "bytes": 3145,
+      "sha256": "8c670eb29c44b48ff80a8b47a333d314789576e2d9e650683bc2ef192d8a0390"
+    },
+    {
       "path": "runtime/lib/tv-control.mjs",
       "bytes": 11944,
       "sha256": "5c0005ef20767bb46845f7a73c8b21a8f430d0e5c900f36a9993c609565afbb1"
@@ -336,7 +341,7 @@
     {
       "path": "config.yaml",
       "bytes": 1051,
-      "sha256": "8bf7f06d25363461d5207b2b224311fb500712bed1fd893dc5d2607fa7fa1435"
+      "sha256": "64edc715640afab58ee3a679b5445f1d975daa6d30da08e7d636c275054da623"
     }
   ]
 }

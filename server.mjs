@@ -30,7 +30,7 @@ import { createHlsRequest, readHlsPlaylist, pipeHlsMedia, createHlsResources, ca
 const ROOT = path.dirname(fileURLToPath(import.meta.url));
 const DEFAULTS = {
   household: 'Domov', publicOrigin: '', allowedOrigins: [], apps: [], calendarDays: 7,
-  entities: { weather: {}, calendars: [], cameras: [], mediaPlayers: [], scenes: [], lights: [], locks: [], doors: [] },
+  entities: { weather: {}, calendars: [], cameras: [], mediaPlayers: [], scenes: [], lights: [], locks: [], doors: [], school: [] },
   safeScenes: [], allowedMediaHosts: [], allowedStreamHosts: [], photos: { intervalSeconds: 30 },
 };
 const MIME = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.js': 'text/javascript; charset=utf-8',
@@ -56,7 +56,7 @@ function normalizeConfig(input = {}) {
   const config = { ...DEFAULTS, ...input, entities: { ...DEFAULTS.entities, ...(input.entities || {}) }, photos: { ...DEFAULTS.photos, ...(input.photos || {}) } };
   config.householdPanel = normalizeHouseholdPanel(input.householdPanel);
   config.domesticPanel = normalizeDomesticPanel(input.domesticPanel);
-  for (const key of ['calendars', 'cameras', 'mediaPlayers', 'scenes', 'lights', 'locks', 'doors']) {
+  for (const key of ['calendars', 'cameras', 'mediaPlayers', 'scenes', 'lights', 'locks', 'doors', 'school']) {
     config.entities[key] = (Array.isArray(config.entities[key]) ? config.entities[key] : []).filter(item => item && ENTITY.test(item.entityId || '')).map(item => ({
       entityId: item.entityId, name: cleanText(item.name || item.entityId, 100),
       ...(item.area ? { area: cleanText(item.area, 100) } : {}),
