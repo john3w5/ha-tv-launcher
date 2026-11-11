@@ -23,5 +23,11 @@ configuration:
   night_control_enabled:
     name: "Povolit potvrzovaný noční plán"
     description: "Ve výchozím stavu vypnuto. Nejdříve nakonfigurujte a prověřte vlastní plán."
+  strava_email:
+    name: "E-mail rodičovského účtu Strava.cz"
+    description: "Volitelné. Jen pro zobrazení, zda děti vyzvedly oběd. Launcher nic neobjednává."
+  strava_password:
+    name: "Heslo rodičovského účtu Strava.cz"
+    description: "Zůstává v soukromých volbách aplikace."
   session_days:
     name: "Platnost spárování ve dnech"

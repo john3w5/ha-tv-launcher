@@ -1,17 +1,17 @@
 {
   "version": 1,
-  "generatedAt": "2026-11-03T13:25:23.593Z",
+  "generatedAt": "2026-11-11T18:19:32.171Z",
   "privateDataIncluded": false,
   "files": [
     {
       "path": "runtime/server.mjs",
-      "bytes": 65541,
-      "sha256": "b057d4cea914f08cbd17e2b57944dc60dba75556e4a769f5e90b581a69894142"
+      "bytes": 65924,
+      "sha256": "42621bbbedc76339b79e7058adb6c271c07cc2803b7f3aaebb86ca286525f64b"
     },
     {
       "path": "runtime/package.json",
       "bytes": 500,
-      "sha256": "8600aacc1d478a3e6a88005a2a33fdb674eb70147d0c0fbbcaf7ae2ee635a2b7"
+      "sha256": "f71d7cfbeb8331553137191c443c6ec98f96b4df93fbe54a29e945a7c76cba3d"
     },
     {
       "path": "runtime/config.example.json",
@@ -299,6 +299,11 @@
       "sha256": "8c670eb29c44b48ff80a8b47a333d314789576e2d9e650683bc2ef192d8a0390"
     },
     {
+      "path": "runtime/lib/strava-lunch.mjs",
+      "bytes": 5367,
+      "sha256": "34a4ab02515b49e5f40077d51da73db2f7aa13885674218ab0a3a60c9ddb59d5"
+    },
+    {
       "path": "runtime/lib/tv-control.mjs",
       "bytes": 11944,
       "sha256": "5c0005ef20767bb46845f7a73c8b21a8f430d0e5c900f36a9993c609565afbb1"
@@ -325,8 +330,8 @@
     },
     {
       "path": "startup.mjs",
-      "bytes": 13639,
-      "sha256": "aba20a99a562899c4475f3add6dc1ce3c09763c6e33abb212c31d125f2dfa07b"
+      "bytes": 13893,
+      "sha256": "1b1a885b668fc267e0c5a0384e07733f6669821accc886c1ffe564e547289e0b"
     },
     {
       "path": "README.md",
@@ -335,13 +340,13 @@
     },
     {
       "path": "translations/cs.yaml",
-      "bytes": 1461,
-      "sha256": "7027c8c2dc755413954f6b80c4aa39d5f2586a3c4147375be23a493765646951"
+      "bytes": 1765,
+      "sha256": "a7c794875c577fe2b6662066a4a5a66f2a6a2ce926814cfbf8cba7ad92f48f92"
     },
     {
       "path": "config.yaml",
-      "bytes": 1051,
-      "sha256": "64edc715640afab58ee3a679b5445f1d975daa6d30da08e7d636c275054da623"
+      "bytes": 1103,
+      "sha256": "9f911d5924aebea31fd9d6efd9b38cd4e06a8b685ae2727453c1034a5401e2a4"
     }
   ]
 }

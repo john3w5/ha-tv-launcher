@@ -203,6 +203,8 @@ export async function start({ source = SOURCE, data = '/data', configImport = '/
     TV_WEBHOOK_TOKEN: await persistentSecret(path.join(root, 'private', 'state', 'webhook-token'), options.webhook_token),
     TV_SESSION_STORE: path.join(root, 'private', 'state', 'sessions.json'), TV_SESSION_DAYS: String(connection.days),
     PHOTO_DIR: path.join(root, 'private', 'photos'), NIGHT_CONTROL_ENABLED: connection.night ? '1' : '0', TV_CONTROL_ENABLED: '0',
+    // Optional Strava.cz parent account, only for reading lunch pickup.
+    STRAVA_EMAIL: typeof options.strava_email === 'string' ? options.strava_email : '', STRAVA_PASSWORD: typeof options.strava_password === 'string' ? options.strava_password : '',
   };
   const { createBridge } = await import(pathToFileURL(path.join(source, 'server.mjs')).href);
   const bridge = await createBridge({ root, config, env });

@@ -26,6 +26,7 @@ import { createHomeControls } from './lib/home-controls.mjs';
 import { createPowerUpdates } from './lib/power-updates.mjs';
 import { createEntranceDoor } from './lib/entrance-door.mjs';
 import { createHlsRequest, readHlsPlaylist, pipeHlsMedia, createHlsResources, cancelHlsResponse, HlsProxyError } from './lib/hls-proxy.mjs';
+import { createStravaLunch } from './lib/strava-lunch.mjs';
 
 const ROOT = path.dirname(fileURLToPath(import.meta.url));
 const DEFAULTS = {
@@ -208,6 +209,7 @@ export async function createBridge(options = {}) {
   // Persistence must be explicitly configured. Unit-test bridges remain memory-only.
   const sessions = await createPairedSessions({ storePath: options.sessionStorePath ?? (readOnlyPreview ? undefined : env.TV_SESSION_STORE), ttlDays: env.TV_SESSION_DAYS, now: options.sessionNow || Date.now });
   const stateDirectory = !readOnlyPreview && env.TV_SESSION_STORE ? path.dirname(env.TV_SESSION_STORE) : null;
+  const lunch = options.lunch ?? (!readOnlyPreview && env.STRAVA_EMAIL && env.STRAVA_PASSWORD ? createStravaLunch({ email: env.STRAVA_EMAIL, password: env.STRAVA_PASSWORD }).start() : null);
   const clientSettings = await createClientSettings({ storePath: options.clientSettingsStorePath ?? (stateDirectory ? path.join(stateDirectory, 'client-settings.json') : undefined),
     now: options.settingsNow || Date.now, photoIntervalSeconds: config.photos.intervalSeconds });
   const timeline = await createHouseTimeline({ storePath: options.timelineStorePath ?? (stateDirectory ? path.join(stateDirectory, 'house-timeline.json') : undefined), now: options.timelineNow || options.notificationNow || Date.now });
@@ -638,7 +640,7 @@ export async function createBridge(options = {}) {
         requireAuth(req);
         if (mode === 'setup') throw new HttpError(503, 'Doplňte konfiguraci a přihlašovací údaje na serveru.');
         if (!dashboardCache || Date.now() - dashboardCache.created > 5000) {
-          dashboardPending ||= readDashboard(ha, config).then(data => { dashboardCache = { data, created: Date.now() }; return data; }).finally(() => { dashboardPending = null; });
+          dashboardPending ||= readDashboard(ha, config).then(data => lunch ? { ...data, lunch: lunch.snapshot(config.entities.school.map(item => item.name)) } : data).then(data => { dashboardCache = { data, created: Date.now() }; return data; }).finally(() => { dashboardPending = null; });
           await dashboardPending;
         }
         return sendJson(res, 200, dashboardCache.data);
@@ -931,6 +933,7 @@ export async function createBridge(options = {}) {
   const closeRtcSessions = () => { clearInterval(rtcCleanup); for (const entry of webRtcSessions.values()) closeWebRtc(entry, 'shutdown'); };
   server.on('close', () => { powerUpdates.close(); cameraSnapshots?.close(); notificationRetries.clear(); closeRtcSessions(); houseFeed?.stop(); notificationFeed?.stop(); for (const client of clients) client.res.end(); clients.clear(); });
   return { server, mode, config, broadcast, notificationStatus: () => notificationFeed?.getStatus() || { ...notificationStatus }, close: () => {
+    lunch?.stop?.();
     powerUpdates.close(); cameraSnapshots?.close(); closeRtcSessions(); houseFeed?.stop(); notificationFeed?.stop(); for (const client of clients) client.res.end(); server.closeAllConnections(); return new Promise(resolve => server.close(resolve)).then(() => timeline.flush());
   } };
 }

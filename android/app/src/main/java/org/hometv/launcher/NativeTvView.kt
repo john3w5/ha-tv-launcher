@@ -668,6 +668,13 @@ class NativeTvView(context: Context) : View(context) {
     private fun schoolCard(c: Canvas, child: JSONObject, day: String?, r: RectF) {
         card(c, r); text(c, child.string("name", "Rozvrh"), r.left + 25f, r.top + 40f, 21f, ink(), r.width() - 50f, true)
         if (day != null) text(c, schoolDayLabel(day, true), r.left + 25f, r.top + 66f, 13f, muted(), r.width() - 50f)
+        // Today's lunch pickup from Strava.cz, read once a day after school.
+        val lunch = data().obj("lunch").takeIf { it.optBoolean("available") }?.array("children")?.objects(4)?.find { it.string("name") == child.string("name") }
+        lunch?.array("meals")?.objects(20)?.find { it.string("date") == format(now, "yyyy-MM-dd") }?.let { meal ->
+            val served = meal.opt("served") as? Boolean
+            val label = when (served) { true -> "Oběd vyzvednut " + meal.string("time"); false -> "Oběd nevyzvednut"; else -> meal.string("label") }
+            if (label.isNotBlank()) text(c, label.trim(), r.left + 200f, r.top + 40f, 14f, if (served == false) schoolAccent() else muted(), r.width() - 225f)
+        }
         val entry = child.array("days").objects(32).find { it.string("date") == day }
         val lessons = entry?.array("lessons")?.objects(12).orEmpty()
         when {
