@@ -58,9 +58,10 @@ export function createStravaLunch({ email, password, fetch = globalThis.fetch, o
       await call('/api/nactiVlastnostiPA', { sid, url: s5url, cislo, lang: 'CZ', ignoreCert, getText: true, checkVersion: true, frontendFunction: 'loginCanteenUsingPA' });
       const pickup = await call('/api/vydej', { cislo, s5url, sid, ignoreCert, lang: 'CZ' });
       const list = mealList(pickup);
-      if (!list.length && pickup && typeof pickup === 'object') log.info?.(`Strava.cz: výdej bez položek, klíče: ${Object.keys(pickup).slice(0, 12).join(', ')}`);
+      if (!list.length) log.info?.(`Strava.cz: účet ${accounts.length + 1} má výdej bez položek (${Array.isArray(pickup) ? 'prázdný seznam' : `klíče: ${Object.keys(pickup || {}).slice(0, 12).join(', ')}`}).`);
       accounts.push({ name: text(canteen.PopisUctuJidelny, 120), meals: list.map(normalizeMeal).filter(Boolean).sort((a, b) => b.date.localeCompare(a.date)).slice(0, 20) });
     }
+    log.info?.(`Strava.cz: načteno ${accounts.length} účtů, položek výdeje: ${accounts.map(item => item.meals.length).join(', ') || '0'}.`);
     return accounts;
   }
   async function tick() {
