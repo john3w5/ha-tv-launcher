@@ -11,11 +11,13 @@ test('pickup codes map to served, not served and unknown', () => {
   assert.equal(normalizeMeal({ datum: 'zítra', vydano: 1 }), null);
 });
 
-test('pickup is read on start and then once a day after 17:00 Prague time', () => {
-  assert.equal(due(null, new Date('2026-11-11T08:00:00Z')).due, true);
-  assert.equal(due('2026-11-11', new Date('2026-11-11T17:30:00Z')).due, false);
-  assert.equal(due('2026-11-10', new Date('2026-11-11T15:30:00Z')).due, false);
-  assert.equal(due('2026-11-10', new Date('2026-11-11T16:10:00Z')).due, true);
+test('pickup is read on start and then after 7:00 and after 17:00 Prague time', () => {
+  assert.equal(due(null, new Date('2026-11-11T03:00:00Z')).due, true);
+  assert.equal(due('start', new Date('2026-11-11T05:00:00Z')).due, false);
+  assert.deepEqual(due('2026-11-10 evening', new Date('2026-11-11T06:30:00Z')), { slot: '2026-11-11 morning', due: true });
+  assert.equal(due('2026-11-11 morning', new Date('2026-11-11T15:30:00Z')).due, false);
+  assert.deepEqual(due('2026-11-11 morning', new Date('2026-11-11T16:10:00Z')), { slot: '2026-11-11 evening', due: true });
+  assert.equal(due('2026-11-11 evening', new Date('2026-11-11T22:00:00Z')).due, false);
 });
 
 test('the parent account is read without ordering and children are matched by first name', async () => {

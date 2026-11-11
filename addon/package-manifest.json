@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-11-11T18:30:21.226Z",
+  "generatedAt": "2026-11-11T18:38:31.946Z",
   "privateDataIncluded": false,
   "files": [
     {
@@ -11,7 +11,7 @@
     {
       "path": "runtime/package.json",
       "bytes": 501,
-      "sha256": "c422754a0292a1ea01f93bf316ddf22cf331baec5c9bbe4699e79087ecd945e2"
+      "sha256": "8a6e4d2d99ee1ea0d877a8a147003251ed009ca49f359f172436b8e3b47f2957"
     },
     {
       "path": "runtime/config.example.json",
@@ -300,8 +300,8 @@
     },
     {
       "path": "runtime/lib/strava-lunch.mjs",
-      "bytes": 5566,
-      "sha256": "d2df845c7f0295b0cfa8a5462730a9990ca0c883e72ef7a7e71bccf00a0526d3"
+      "bytes": 5814,
+      "sha256": "7deb6d91a3eb7706b06b97af297c25a4804a7981c6fd4db24cbcebfcdbef5f75"
     },
     {
       "path": "runtime/lib/tv-control.mjs",
@@ -346,7 +346,7 @@
     {
       "path": "config.yaml",
       "bytes": 1104,
-      "sha256": "0bc2407bce116d4107880357645b66d21c190c34ce28fe729e141bc7bf19d816"
+      "sha256": "19987a105dbcc0260f559932ec4f1f1ae5eefb54c4455591e3c130ac78bb6119"
     }
   ]
 }
