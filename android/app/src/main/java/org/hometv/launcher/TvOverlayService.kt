@@ -59,7 +59,8 @@ class TvOverlayService : Service() {
         @Volatile var foregroundSettings: ((JSONObject) -> Unit)? = null
         @Volatile var foregroundPower: ((JSONObject) -> Unit)? = null
         @Volatile var foregroundPowerStatus: ((JSONObject) -> Unit)? = null
-        @Volatile private var running = false
+        @Volatile var running = false
+            private set
         @Volatile private var rejectedCookie: String? = null
 
         fun enabled(context: Context) = context.getSharedPreferences("tv_overlay", Context.MODE_PRIVATE).getBoolean("enabled", true)
